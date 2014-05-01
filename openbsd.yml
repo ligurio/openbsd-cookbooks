@@ -68,7 +68,7 @@
       create=True
 
   - name: make OpenBSD ports tree up to date
-    action: shell cvs -d {{ cvsroot }} -q up -Pd
+    action: shell cd /usr/ports && cvs -d {{ cvsroot }} -q up -Pd
 
 #  - name: checkout OpenBSD src repository
 #    action: shell cd /usr && cvs -qd {{ cvsroot }} get -P src
