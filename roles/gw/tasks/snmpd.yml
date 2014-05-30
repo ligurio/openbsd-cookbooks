@@ -1,15 +1,15 @@
 ---
 
   tasks:
-  - name: start smtpd
-    service: name=smtpd state=started
+  - name: start snmpd
+    service: name=snmpd state=started
 
   - name: add service to rc.conf.local
     sudo: yes
     lineinfile:
       dest=/etc/rc.conf.local
       backup=yes
-      line="smtpd_flags="""
+      line="snmpd_flags="""
       regexp='^'
       state=present
       insertafter=EOF

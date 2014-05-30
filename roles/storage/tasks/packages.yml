@@ -18,9 +18,13 @@
     openbsd_pkg: name={{ item }} state=present
     with_items:
       - fossil
-      - igmpproxy
       - mc
+      - minidlna
+      - munin
       - nginx
-      - rss2email
+      - rsnapshot
+      - seafile
+      - transmission
       - vim
-      - unbound
+      - vsftpd
+      - zeya

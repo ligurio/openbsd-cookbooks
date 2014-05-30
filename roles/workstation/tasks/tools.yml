@@ -1,13 +1,4 @@
-# echo "sergeyb.qa.sw.ru" > hosts
-# ansible-playbook -i hosts  -K openbsd.yml --extra-vars "hosts=sergeyb.qa.sw.ru user=sergeyb mirror=ftp.eu.openbsd.org"
-
 ---
-- hosts: '{{ hosts }}'
-  remote_user: '{{ user }}'
-  gather_facts: no
-  connection: ssh
-  vars:
-    mirror: ftp.eu.openbsd.org
 
   tasks:
   - name: adjust installpath in /etc/pkg.conf

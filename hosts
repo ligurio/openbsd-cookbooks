@@ -12,3 +12,9 @@ vm2.qa.sw.ru
 
 [all:vars]
 user=sergeyb
+remote_user=sergeyb
+gather_facts=no
+connection=ssh
+mirror=ftp.eu.openbsd.org
+release=snapshots
+cvsroot=anoncvs@anoncvs.spacehopper.org:/cvs

@@ -1,6 +1,6 @@
   tasks:
-  - name: copy pf.mgmt.conf to servers
-    action: copy src=/home/ansible/freebsd/etc/pf.conf
+  - name: copy pf.conf
+    action: copy src=files/pf.conf
       dest=/etc/pf.conf owner=root group=wheel mode=0644
     notify:
       - reload pf
