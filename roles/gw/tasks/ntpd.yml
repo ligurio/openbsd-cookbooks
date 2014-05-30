@@ -14,3 +14,7 @@
       state=present
       insertafter=EOF
       create=True
+
+  - name: set time
+    sudo: yes
+    shell: ntpd -s -d

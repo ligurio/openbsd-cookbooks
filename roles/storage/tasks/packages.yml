@@ -17,6 +17,8 @@
     sudo: yes
     openbsd_pkg: name={{ item }} state=present
     with_items:
+      - beets
+      - flow-tools
       - fossil
       - mc
       - minidlna
