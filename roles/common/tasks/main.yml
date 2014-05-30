@@ -1,0 +1,14 @@
+---
+
+  tasks:
+
+  - name: adjust installpath in /etc/pkg.conf
+    sudo: yes
+    lineinfile:
+      dest=/etc/pkg.conf
+      backup=yes
+      line="installpath = http://ftp.eu.openbsd.org/pub/OpenBSD/{{ release }}/packages/`machine -a`/"
+      regexp='^'
+      state=present
+      insertafter=EOF
+      create=True

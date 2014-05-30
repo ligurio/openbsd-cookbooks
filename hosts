@@ -1,0 +1,14 @@
+[workstation]
+localhost
+
+[gw]
+gw.bronevichok.ru
+
+[storage]
+dl.bronevichok.ru
+
+[dev]
+vm2.qa.sw.ru
+
+[all:vars]
+user=sergeyb

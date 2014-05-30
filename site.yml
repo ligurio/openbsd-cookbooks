@@ -1,0 +1,8 @@
+- hosts: all
+  roles:
+   - common
+   - dev
+   - gw
+   - storage
+   - workstation
+
