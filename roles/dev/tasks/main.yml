@@ -1,66 +1,51 @@
----
+- name: install required packages
+  sudo: yes
+  openbsd_pkg: name={{ item }} state=present
+  with_items:
+    - git
+    - vim
 
-  tasks:
+- name: checkout openbsd-wip
+  git: repo=https://github.com/jasperla/openbsd-wip
+    dest=/usr/ports/openbsd-wip
+    update=yes
 
-  - name: adjust installpath in /etc/pkg.conf
-    sudo: yes
-    lineinfile:
-      dest=/etc/pkg.conf
-      backup=yes
-      line="installpath = http://ftp.eu.openbsd.org/pub/OpenBSD/{{ release }}/packages/`machine -a`/"
-      regexp='^'
-      state=present
-      insertafter=EOF
-      create=True
+- name: adjust PORTSDIR_PATH in /etc/pkg.conf
+  sudo: yes
+  lineinfile:
+    dest=/etc/pkg.conf
+    backup=yes
+    line="PORTSDIR_PATH=${PORTSDIR}:$(PORTSDIR)/openbsd-wip:${PORTSDIR}/mystuff"
+    regexp='^'
+    state=present
+    insertafter=EOF
+    create=True
 
-  - name: install required packages
-    sudo: yes
-    openbsd_pkg: name={{ item }} state=present
-    with_items:
-      - git
-      - vim
+- name: adjust git settings for openbsd-wip
+  action: shell cd /usr/ports/openbsd-wip/ && git config branch.master.rebase true
 
-  - name: checkout openbsd-wip
-    git: repo=https://github.com/jasperla/openbsd-wip
-      dest=/usr/ports/openbsd-wip
-      update=yes
+- name: download ports.tar.gz
+  get_url: url=ftp://{{ mirror }}/pub/OpenBSD/{{ release }}/ports.tar.gz dest=~/
 
-  - name: adjust PORTSDIR_PATH in /etc/pkg.conf
-    sudo: yes
-    lineinfile:
-      dest=/etc/pkg.conf
-      backup=yes
-      line="PORTSDIR_PATH=${PORTSDIR}:$(PORTSDIR)/openbsd-wip:${PORTSDIR}/mystuff"
-      regexp='^'
-      state=present
-      insertafter=EOF
-      create=True
+- name: unpack ports.tar.gz
+  action: shell tar xvzf ~/ports.tar.gz -C /usr
 
-  - name: adjust git settings for openbsd-wip
-    action: shell cd /usr/ports/openbsd-wip/ && git config branch.master.rebase true
+- name: remove ports.tar.gz
+  action: shell rm ~/ports.tar.gz
 
-  - name: download ports.tar.gz
-    get_url: url=ftp://ftp.eu.openbsd.org/pub/OpenBSD/{{ release }}/ports.tar.gz dest=~/
+- name: .profile
+  sudo: yes
+  lineinfile:
+    dest=~/.profile
+    backup=yes
+    line="export CVSROOT={{ cvsroot }}"
+    regexp='^'
+    state=present
+    insertafter=EOF
+    create=True
 
-  - name: unpack ports.tar.gz
-    action: shell tar xvzf ~/ports.tar.gz -C /usr
-
-  - name: remove ports.tar.gz
-    action: shell rm ~/ports.tar.gz
-
-  - name: .profile
-    sudo: yes
-    lineinfile:
-      dest=~/.profile
-      backup=yes
-      line="export CVSROOT={{ cvsroot }}"
-      regexp='^'
-      state=present
-      insertafter=EOF
-      create=True
-
-  - name: make OpenBSD ports tree up to date
-    action: shell cd /usr/ports && cvs -d {{ cvsroot }} -q up -Pd
+- name: make OpenBSD ports tree up to date
+  action: shell cd /usr/ports && cvs -d {{ cvsroot }} -q up -Pd
 
 #  - name: checkout OpenBSD src repository
 #    action: shell cd /usr && cvs -qd {{ cvsroot }} get -P src
