@@ -23,6 +23,11 @@ For example '5.5', which was released on 1 May 2014.
 
 https://asciinema.org/a/9221
 
+### Similar projects
+
+* [OpenSMTPD](https://github.com/cw-ansible/cw.opensmtpd)
+* [etckeeper](https://github.com/cw-ansible/cw.etckeeper)
+
 ### License, Authors, Copyright
 
 This playbook is distributed under the terms of BSD license.
