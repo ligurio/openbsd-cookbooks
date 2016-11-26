@@ -1,37 +1,28 @@
-Ansible playbook
+OpenBSD cookbook
 ================
 
-This is an playbook for [Ansible](http://www.ansible.com),
-allowing to setup developer environment on [OpenBSD](http://www.openbsd.org/).
+This is OpenBSD cookbook. It consists from a set of Ansible playbooks allowing
+to setup [OpenBSD](http://www.openbsd.org/) for different usecases:
 
-* install git and vim packages
-* download OpenBSD ports tree and update it
-* download [openbsd-wip](https://github.com/jasperla/openbsd-wip) repository
-* make required changes in configuration files
+* development
+* workstation
+* regression testing
 
 ### Usage
 
-* install ansible
-* add hostname of OpenBSD system to hosts
-* run in terminal:
- ``ansible-playbook -i hosts  -K openbsd.yml --extra-vars "hosts=vm2.qa.sw.ru user=estet release=snapshots"``
+```
+$ cat inventory
+box ansible_host=192.168.22.68 ansible_user=root ansible_python_interpreter=/usr/local/bin/python2.7
+$ ansible box -m raw -a "export PKG_PATH=http://ftp.eu.openbsd.org/pub/OpenBSD/6.0/packages/amd64/; pkg_add py-simplejson; ln -sf /usr/local/bin/python2.7 /usr/local/bin/python" -i inventory
+$ ansible-playbook box devel.yml -i inventory
+```
 
-where ``user`` is a user on remote system, ``release`` can be 'snapshots' or a number of official OpenBSD release.
-For example '5.5', which was released on 1 May 2014.
+[Screencast](https://asciinema.org/a/9221)
 
-### Demo
-
-https://asciinema.org/a/9221
+This playbook is distributed under the terms of BSD license.
+Author: Sergey Bronnikov [@estet](https://twitter.com/estet)
 
 ### Similar projects
 
 * [OpenSMTPD](https://github.com/cw-ansible/cw.opensmtpd)
 * [etckeeper](https://github.com/cw-ansible/cw.etckeeper)
-
-### License, Authors, Copyright
-
-This playbook is distributed under the terms of BSD license.
-
-Copyright (c) Sergey Bronnikov
-
-Author: Sergey Bronnikov [@estet](https://twitter.com/estet) (estetus@gmail.com)
