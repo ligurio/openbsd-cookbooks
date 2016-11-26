@@ -1,6 +1,0 @@
-# TODO:
-# sudoers
-# sshd (AllowUsers)
-
-- include: common.yml
-- include: packages.yml
