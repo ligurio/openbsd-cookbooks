@@ -10,7 +10,7 @@
       - ImageMagick
       - ansible
       - autocutsel
-#      - bmf
+      - bmf--
       - bzip2
       - chromium
       - colorls
@@ -24,12 +24,11 @@
       - fdupes
       - feh
       - firefox
-      - fossil
+      - fossil--
       - gimp
       - git
-      - gnuplot
+      - gnuplot--no_x11
       - go
-      - goldendict
       - gpsbabel
       - gpsd
       - imapfilter
@@ -50,7 +49,7 @@
       - mpd
       - mplayer
       - msmtp
-#      - mutt
+      - mutt--gpgme
       - ncmpc
       - ntfs_3g
 #      - nvpy
@@ -60,10 +59,10 @@
       - p7zip-rar
       - passwdqc
       - pianobar
-#      - pidgin
+      - pidgin--gtkspell
       - pjsua
       - polipo
-#      - pwsafe
+      - pwsafe--no_x11
       - python
       - qgit
       - redshift
@@ -78,7 +77,7 @@
       - sxiv
       - tango-icon-theme
       - tango-icon-theme-extras
-#      - terminus-font
+      - terminus-font--
       - tesseract
       - tesseract-rus
       - texlive_base
@@ -88,8 +87,8 @@
       - tor
       - ubuntu-fonts
       - unpaper
-      - unzip
-      - urlview
+      - unzip--iconv
+      - urlview--
       - usbutils
       - vim
       - virt-viewer

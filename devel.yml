@@ -6,6 +6,8 @@
   vars:
     pkg_path: 'http://ftp.eu.openbsd.org/pub/OpenBSD/{{ release }}/packages/amd64/'
     release: '6.0'
+#   https://www.openbsd.org/anoncvs.html
+    cvs: 'anoncvs@mirror.osn.de:/cvs'
 
   tasks:
   - name: ensure SSH keys are installed
@@ -108,10 +110,10 @@
     become_method: su
     become: true
 
-  - name: checkout OpenBSD sources from CVS
-    action: shell cd /usr/ports && cvs -d {{ cvsroot }} -q up -Pd
-    with_items:
-        - src
-        - sys
-        - xenocara
-        - www
+#  - name: checkout OpenBSD sources from CVS
+#    command: CVSROOT={{ cvs }}; cd /usr/ && cvs -d {{ item }} -q up -Pd
+#    with_items:
+#        - src
+#        - sys
+#        - xenocara
+#        - www
