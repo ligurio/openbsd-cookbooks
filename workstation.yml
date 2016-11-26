@@ -1,0 +1,154 @@
+---
+- hosts: all
+  gather_facts: true
+  user: root
+
+  vars:
+    release: '6.0'
+    pkg_path: 'http://ftp.eu.openbsd.org/pub/OpenBSD/6.0/packages/amd64/'
+    workstation_package_set:
+      - ImageMagick
+      - ansible
+      - autocutsel
+#      - bmf
+      - bzip2
+      - chromium
+      - colorls
+      - curl
+      - deadbeef
+      - djview4
+      - dmidecode
+      - exiftran
+      - exiv2
+      - fdm
+      - fdupes
+      - feh
+      - firefox
+      - fossil
+      - gimp
+      - git
+      - gnuplot
+      - go
+      - goldendict
+      - gpsbabel
+      - gpsd
+      - imapfilter
+      - ispell
+      - ispell-russian
+      - jhead
+      - josm
+      - kismet
+      - latex-mk
+      - lbdb
+      - lbdb-ldap
+      - ledger
+      - liberation-fonts
+      - libreoffice
+      - libreoffice-i18n-ru
+      - lifelines
+      - mpc
+      - mpd
+      - mplayer
+      - msmtp
+#      - mutt
+      - ncmpc
+      - ntfs_3g
+#      - nvpy
+      - offlineimap
+      - openttd
+      - p7zip
+      - p7zip-rar
+      - passwdqc
+      - pianobar
+#      - pidgin
+      - pjsua
+      - polipo
+#      - pwsafe
+      - python
+      - qgit
+      - redshift
+      - remmina
+      - rss2email
+      - rsync
+      - rtunes
+      - ru-ptsans
+      - scrot
+      - smartmontools
+      - sox
+      - sxiv
+      - tango-icon-theme
+      - tango-icon-theme-extras
+#      - terminus-font
+      - tesseract
+      - tesseract-rus
+      - texlive_base
+      - texlive_texmf-minimal
+      - tkabber
+      - tkabber-plugins
+      - tor
+      - ubuntu-fonts
+      - unpaper
+      - unzip
+      - urlview
+      - usbutils
+      - vim
+      - virt-viewer
+      - wpa_supplicant
+      - xbattbar
+      - xbindkeys
+      - xclip
+      - xdg-utils
+      - xmahjongg
+      - xpdf
+      - zathura
+    gw_package_set:
+      - fossil
+      - igmpproxy
+      - mc
+      - radicale
+      - rss2email
+      - vim
+    storage_package_set:
+      - beets
+      - flow-tools
+      - fossil
+      - mc
+      - minidlna
+      - munin
+      - nginx
+      - rsnapshot
+      - seafile
+      - transmission
+      - vim
+      - vsftpd
+
+  tasks:
+  - name: adjust installpath in /etc/pkg.conf
+    lineinfile:
+      dest=/etc/pkg.conf
+      backup=yes
+      line="installpath = {{ pkg_path }}"
+      regexp='^'
+      state=present
+      insertafter=EOF
+      create=True
+    become_method: su
+    become: true
+
+  - name: install required packages
+    openbsd_pkg: name={{ item }} state=present
+    with_items: "{{ workstation_package_set }}"
+    become_method: su
+    become: true
+
+  - name: download openup script
+    get_url:
+      url: https://stable.mtier.org/openup
+      dest: /usr/bin/
+    become_method: su
+    become: true
+
+  - name: execute openup
+    command: "/usr/bin/openup"
+    become_method: su
+    become: true

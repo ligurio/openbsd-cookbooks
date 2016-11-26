@@ -1,0 +1,90 @@
+# http://www.mtier.org/solutions/apps/openup/
+# https://www.openbsd.org/faq/faq7.html#SerCon
+# ulimit -u
+# https://github.com/ligurio/ansible-playbook-ipmi/blob/master/playbooks/roles/bmcconfig/tasks/main.yml
+
+---
+- hosts: all
+  gather_facts: true
+  user: sergeyb
+
+  vars:
+    pkg_path: 'http://ftp.eu.openbsd.org/pub/OpenBSD/6.0/packages/amd64/'
+    release: '6.0'
+    kernel_params:
+      - { name: kern.watchdog.auto, value: 1 }
+      - { name: kern.watchdog.auto, value: 1 }
+      - { name: kern.watchdog.period, value: 10 }
+      - { name: kern.nosuidcoredump, value: 2 }
+      - { name: ddb.panic, value: 1 }
+      - { name: ddb.consol, value: 1 }
+      - { name: ddb.log, value: 1 }
+      - { name: ddb.trigger, value: 1 }
+
+  tasks:
+  - name: ensure SSH keys are installed
+    authorized_key: user=root key=https://github.com/{{ item }}.keys
+    with_items:
+      - ligurio
+    become_method: su
+    become: true
+
+  - name: /etc/pkg.conf
+    lineinfile:
+      dest=/etc/pkg.conf
+      backup=yes
+      line="installpath = {{ pkg_path }}"
+      regexp='^'
+      state=present
+      insertafter=EOF
+      create=True
+    become_method: su
+    become: true
+
+  - name: adjust sysctl parameters
+    sysctl: name={{ item.name }} value={{ item.value }} state=present sysctl_file=/etc/sysctl.conf
+    with_items: "{{ kernel_params }}"
+    become_method: su
+    become: true
+
+  - name: install packages
+    openbsd_pkg: name={{ item }} state=present
+    with_items:
+        - py-test
+        - py-pip
+    become_method: su
+    become: true
+
+  - name: checkout latest version of regression tests
+    git:
+      repo: https://github.com/ligurio/openbsd-tests
+      dest: /home/regress/openbsd-tests
+      accept_hostkey: yes
+      clone: yes
+      update: yes
+
+  - name: disable cron(8)
+    file: path=/etc/{{ item }} mode=0555
+    with_items:
+        - daily
+        - weekly
+        - monthly
+    become_method: su
+    become: true
+
+  - name: start watchdog
+    service: name=watchdog state=started
+    become_method: su
+    become: true
+
+  - name: enable watchdogd service in the rc.conf.local
+    lineinfile:
+      dest=/etc/rc.conf.local
+      backup=yes
+      line="watchdogd_flags="-i 3 -p 30""
+      regexp='^'
+      state=present
+      insertafter=EOF
+      create=True
+    become_method: su
+    become: true

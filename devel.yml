@@ -1,0 +1,117 @@
+---
+- hosts: all
+  gather_facts: true
+  user: sergeyb
+
+  vars:
+    pkg_path: 'http://ftp.eu.openbsd.org/pub/OpenBSD/{{ release }}/packages/amd64/'
+    release: '6.0'
+
+  tasks:
+  - name: ensure SSH keys are installed
+    authorized_key: user=root key=https://github.com/{{ item }}.keys
+    with_items:
+      - ligurio
+    become_method: su
+    become: true
+
+  - name: /etc/doas.conf
+    blockinfile:
+      dest: /etc/doas.conf
+      create: yes
+      block: |
+        permit nopass setenv { ENV PS1 SSH_AUTH_SOCK } :wheel
+        permit nopass setenv { ENV PS1 SSH_AUTH_SOCK } :wsrc
+    become_method: su
+    become: true
+
+  - name: .giconfig
+    blockinfile:
+      dest: /root/.gitconfig
+      create: yes
+      block: |
+        [user]
+                name = Sergey Bronnikov
+                email = sergeyb@bronevichok.ru
+
+        [push]
+                default = simple
+
+        [color]
+                ui = true
+    become_method: su
+    become: true
+
+  - name: /etc/pkg.conf
+    lineinfile:
+      dest: /etc/pkg.conf
+      line: "installpath = {{ pkg_path }}"
+      regexp: '^'
+      state: present
+      insertafter: EOF
+      create: true
+    become_method: su
+    become: true
+
+  - name: install packages
+    openbsd_pkg: name={{ item }} state=present
+    with_items:
+        - git
+        - gmake
+        - the_silver_searcher
+        - vim--no_x11
+    become_method: su
+    become: true
+
+  - name: download release sources {src,ports}.tar.gz
+    get_url:
+       url: http://ftp.eu.openbsd.org/pub/OpenBSD/{{ release }}/{{ item }}.tar.gz
+       dest: /home/{{ release }}/
+       mode: 0440
+    with_items:
+      - src
+      - ports
+    become_method: su
+    become: true
+
+  - name: checkout OpenBSD sources (src, ports)
+    git:
+      repo: https://github.com/openbsd/{{ item.component }}
+      dest: "{{ item.path }}"
+      accept_hostkey: yes
+      clone: yes
+      update: yes
+    with_items:
+      - { component: 'src', path: '/usr/src' }
+      - { component: 'ports', path: '/usr/ports' }
+    become_method: su
+    become: true
+
+  - name: checkout openbsd-wip
+    git:
+      repo: https://github.com/jasperla/openbsd-wip
+      dest: /usr/ports/openbsd-wip
+      accept_hostkey: yes
+      clone: yes
+      update: yes
+    become_method: su
+    become: true
+
+  - name: add PORTSDIR_PATH to the /etc/mk.conf
+    lineinfile:
+      dest: /etc/mk.conf
+      line: "PORTSDIR_PATH=${PORTSDIR}:$(PORTSDIR)/openbsd-wip:${PORTSDIR}/mystuff"
+      regexp: '^'
+      state: present
+      insertafter: EOF
+      create: True
+    become_method: su
+    become: true
+
+  - name: checkout OpenBSD sources from CVS
+    action: shell cd /usr/ports && cvs -d {{ cvsroot }} -q up -Pd
+    with_items:
+        - src
+        - sys
+        - xenocara
+        - www
