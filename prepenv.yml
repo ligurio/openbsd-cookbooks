@@ -17,7 +17,7 @@
       - { name: kern.watchdog.period, value: 10 }
       - { name: kern.nosuidcoredump, value: 2 }
       - { name: ddb.panic, value: 1 }
-      - { name: ddb.consol, value: 1 }
+      - { name: ddb.console, value: 1 }
       - { name: ddb.log, value: 1 }
       - { name: ddb.trigger, value: 1 }
 
