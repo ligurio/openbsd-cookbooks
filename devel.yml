@@ -27,7 +27,7 @@
     become_method: su
     become: true
 
-  - name: .giconfig
+  - name: .gitconfig
     blockinfile:
       dest: /root/.gitconfig
       create: yes
