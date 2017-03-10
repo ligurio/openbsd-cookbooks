@@ -4,16 +4,19 @@
   user: sergeyb
 
   vars:
-    pkg_path: 'http://ftp.eu.openbsd.org/pub/OpenBSD/{{ release }}/packages/amd64/'
+    mirror: 'http://mirror.switch.ch/ftp/pub/OpenBSD/'
     release: '6.0'
 #   https://www.openbsd.org/anoncvs.html
     cvs: 'anoncvs@mirror.osn.de:/cvs'
 
   tasks:
+  - name: add a new user
+    user: name=sergeyb comment="Sergey Bronnikov" groups=wheel,wsrc append=yes
+    become_method: su
+    become: true
+
   - name: ensure SSH keys are installed
-    authorized_key: user=root key=https://github.com/{{ item }}.keys
-    with_items:
-      - ligurio
+    authorized_key: user=sergeyb key=https://github.com/ligurio.keys
     become_method: su
     become: true
 
@@ -27,9 +30,9 @@
     become_method: su
     become: true
 
-  - name: .gitconfig
+  - name: .giconfig
     blockinfile:
-      dest: /root/.gitconfig
+      dest: /home/sergeyb/.gitconfig
       create: yes
       block: |
         [user]
@@ -47,7 +50,7 @@
   - name: /etc/pkg.conf
     lineinfile:
       dest: /etc/pkg.conf
-      line: "installpath = {{ pkg_path }}"
+      line: "installpath = {{ mirror }}/{{ release }}/packages/amd64/"
       regexp: '^'
       state: present
       insertafter: EOF
@@ -62,19 +65,30 @@
         - gmake
         - the_silver_searcher
         - vim--no_x11
+        - py-pip
     become_method: su
     become: true
 
+# pkg_add -D unsigned https://bronevichok.ru/trash/gcovr-3.3.tgz
+#  - name: install gcovr
+#    command: pkg_add -D unsigned https://bronevichok.ru/trash/gcovr-3.3.tgz
+#    become_method: su
+#    become: true
+
+  - name: create a directory
+    file: path=/home/sergeyb/{{ release }} state=directory
+
   - name: download release sources {src,ports}.tar.gz
     get_url:
-       url: http://ftp.eu.openbsd.org/pub/OpenBSD/{{ release }}/{{ item }}.tar.gz
-       dest: /home/{{ release }}/
+       url: "{{ mirror }}/{{ release }}/{{ item.component }}.tar.gz"
+       dest: /home/sergeyb/{{ release }}/
        mode: 0440
+       sha256sum: "{{ item.cksum }}"
     with_items:
-      - src
-      - ports
-    become_method: su
-    become: true
+      - { component: 'src', cksum: 'bcb1cc9fafe2f03ce52455bf07d5cdc90b26ee2550fba1598e938a5fb077b959' }
+      - { component: 'sys', cksum: '2e10bf43f5d649a7b58f95c70848ef792fff159affbac5b6c14838cbf4f8b7fa' }
+      - { component: 'xenocara', cksum: '55629061d23681ce14141d7d85be991147256395cda3bac3fcb0b718e1a65c60' }
+      - { component: 'ports', cksum: '6ebb30084ad4884725eb949134b2c427be04f6db83ce03f4eb20cc3c933ab6f6' }
 
   - name: checkout OpenBSD sources (src, ports)
     git:
@@ -86,8 +100,19 @@
     with_items:
       - { component: 'src', path: '/usr/src' }
       - { component: 'ports', path: '/usr/ports' }
+
+  - name: make 'wsrc' owner of ports
+    file:
+      path: /usr/ports
+      mode: u=rwX,g=rwX,o=rX
+      group: wsrc
+      recurse: yes
     become_method: su
     become: true
+
+  # signify -Gns /etc/signify/my-pkg.sec -p /etc/signify/my-pkg.pub
+  # cd /usr/ports/packages/$(uname -p)
+  # pkg_sign -s signify -s /etc/signify/my-pkg.sec -o signed -S all
 
   - name: checkout openbsd-wip
     git:
@@ -96,19 +121,16 @@
       accept_hostkey: yes
       clone: yes
       update: yes
-    become_method: su
-    become: true
 
-  - name: add PORTSDIR_PATH to the /etc/mk.conf
-    lineinfile:
+  - name: add PORTSDIR_PATH and SIGNING_PARAMETERS to /etc/mk.conf
+    blockinfile:
       dest: /etc/mk.conf
-      line: "PORTSDIR_PATH=${PORTSDIR}:$(PORTSDIR)/openbsd-wip:${PORTSDIR}/mystuff"
-      regexp: '^'
+      content: |
+        PORTSDIR_PATH=${PORTSDIR}:$(PORTSDIR)/openbsd-wip:${PORTSDIR}/mystuff
+        SIGNING_PARAMETERS=-s signify -s /etc/signify/my-pkg.sec 
+      backup: yes
       state: present
-      insertafter: EOF
       create: True
-    become_method: su
-    become: true
 
 #  - name: checkout OpenBSD sources from CVS
 #    command: CVSROOT={{ cvs }}; cd /usr/ && cvs -d {{ item }} -q up -Pd
