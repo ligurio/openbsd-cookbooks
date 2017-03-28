@@ -6,7 +6,7 @@ to setup [OpenBSD](http://www.openbsd.org/) for different usecases:
 
 * development
 * workstation
-* regression testing
+* [regression testing](https://github.com/ligurio/openbsd-tests/)
 
 ### Usage
 
