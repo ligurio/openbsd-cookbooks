@@ -25,8 +25,8 @@
       dest: /etc/doas.conf
       create: yes
       block: |
-        permit nopass setenv { ENV PS1 SSH_AUTH_SOCK } :wheel
-        permit nopass setenv { ENV PS1 SSH_AUTH_SOCK } :wsrc
+        permit nopass keepenv setenv { ENV PS1 SSH_AUTH_SOCK } :wheel
+        permit nopass keepenv setenv { ENV PS1 SSH_AUTH_SOCK } :wsrc
     become_method: su
     become: true
 
