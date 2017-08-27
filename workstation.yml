@@ -4,8 +4,8 @@
   user: root
 
   vars:
-    release: '6.0'
-    pkg_path: 'http://ftp.eu.openbsd.org/pub/OpenBSD/6.0/packages/amd64/'
+    release: '6.1'
+    pkg_path: 'https://ftp.eu.openbsd.org/pub/OpenBSD/6.1/packages/amd64/'
     workstation_package_set:
       - ImageMagick
       - ansible
