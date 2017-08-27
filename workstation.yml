@@ -52,7 +52,6 @@
       - mutt--gpgme
       - ncmpc
       - ntfs_3g
-#      - nvpy
       - offlineimap
       - openttd
       - p7zip
@@ -137,17 +136,5 @@
   - name: install required packages
     openbsd_pkg: name={{ item }} state=present
     with_items: "{{ workstation_package_set }}"
-    become_method: su
-    become: true
-
-  - name: download openup script
-    get_url:
-      url: https://stable.mtier.org/openup
-      dest: /usr/bin/
-    become_method: su
-    become: true
-
-  - name: execute openup
-    command: "/usr/bin/openup"
     become_method: su
     become: true
