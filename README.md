@@ -26,3 +26,4 @@ Author: Sergey Bronnikov [@estet](https://twitter.com/estet)
 
 * [OpenSMTPD](https://github.com/cw-ansible/cw.opensmtpd)
 * [etckeeper](https://github.com/cw-ansible/cw.etckeeper)
+* [ansible-opi](https://cgit.rhaalovely.net/ansible-opi/)
