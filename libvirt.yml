@@ -13,7 +13,7 @@
         - libxslt
         - libtool
         - unzip--
-    become_method: su
+    become_method: doas
     become: true
 
   - name: checkout LibVirt source repository
@@ -25,7 +25,7 @@
       update: yes
       force: yes
       track_submodules: no
-    become_method: su
+    become_method: doas
     become: true
 
   - name: download gnulib sources
@@ -33,7 +33,7 @@
       url: https://github.com/coreutils/gnulib/archive/master.zip
       dest: /root/
       mode: 0440
-    become_method: su
+    become_method: doas
     become: true
 
   - name: unarchive gnulib sources
@@ -41,5 +41,5 @@
        src: /root/gnulib-master.zip
        dest: /root/libvirt
        remote_src: True
-    become_method: su
+    become_method: doas
     become: true

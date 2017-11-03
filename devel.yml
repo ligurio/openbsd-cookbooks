@@ -1,23 +1,24 @@
 ---
 - hosts: all
-  gather_facts: true
+  gather_facts: false
   user: sergeyb
 
   vars:
-    mirror: 'http://mirror.switch.ch/ftp/pub/OpenBSD/'
-    release: '6.0'
+    mirror: "http://ftp.eu.openbsd.org/pub/OpenBSD/"
+    release: '6.2'
 #   https://www.openbsd.org/anoncvs.html
     cvs: 'anoncvs@mirror.osn.de:/cvs'
+    github_user: "ligurio"
 
   tasks:
   - name: add a new user
     user: name=sergeyb comment="Sergey Bronnikov" groups=wheel,wsrc append=yes
-    become_method: su
+    become_method: doas
     become: true
 
   - name: ensure SSH keys are installed
-    authorized_key: user=sergeyb key=https://github.com/ligurio.keys
-    become_method: su
+    authorized_key: user=root key=https://github.com/{{ github_user }}.keys
+    become_method: doas
     become: true
 
   - name: /etc/doas.conf
@@ -27,7 +28,7 @@
       block: |
         permit nopass keepenv setenv { ENV PS1 SSH_AUTH_SOCK } :wheel
         permit nopass keepenv setenv { ENV PS1 SSH_AUTH_SOCK } :wsrc
-    become_method: su
+    become_method: doas
     become: true
 
   - name: .giconfig
@@ -44,18 +45,17 @@
 
         [color]
                 ui = true
-    become_method: su
+    become_method: doas
     become: true
 
-  - name: /etc/pkg.conf
+  - name: /etc/installurl
     lineinfile:
-      dest: /etc/pkg.conf
-      line: "installpath = {{ mirror }}/{{ release }}/packages/amd64/"
-      regexp: '^'
-      state: present
-      insertafter: EOF
-      create: true
-    become_method: su
+      dest=/etc/pkg.conf
+      backup=yes
+      line="{{ pkg_path }}"
+      state=present
+      create=True
+    become_method: doas
     become: true
 
   - name: install packages
@@ -63,16 +63,17 @@
     with_items:
         - git
         - gmake
+        - mc
         - the_silver_searcher
         - vim--no_x11
         - py-pip
-    become_method: su
+    become_method: doas
     become: true
 
 # pkg_add -D unsigned https://bronevichok.ru/trash/gcovr-3.3.tgz
 #  - name: install gcovr
 #    command: pkg_add -D unsigned https://bronevichok.ru/trash/gcovr-3.3.tgz
-#    become_method: su
+#    become_method: doas
 #    become: true
 
   - name: create a directory
@@ -85,10 +86,10 @@
        mode: 0440
        sha256sum: "{{ item.cksum }}"
     with_items:
-      - { component: 'src', cksum: 'bcb1cc9fafe2f03ce52455bf07d5cdc90b26ee2550fba1598e938a5fb077b959' }
-      - { component: 'sys', cksum: '2e10bf43f5d649a7b58f95c70848ef792fff159affbac5b6c14838cbf4f8b7fa' }
-      - { component: 'xenocara', cksum: '55629061d23681ce14141d7d85be991147256395cda3bac3fcb0b718e1a65c60' }
-      - { component: 'ports', cksum: '6ebb30084ad4884725eb949134b2c427be04f6db83ce03f4eb20cc3c933ab6f6' }
+      - { component: 'src', cksum: '732d9eadb07aebb0ca08b2f94bd0695250b5ff7621942b061e9f4dfbb94a3550' }
+      - { component: 'sys', cksum: 'dd4e6cec36c331d0e71268bf7430cf143d5ab1708df0d759d82b9f1059ffa3d6' }
+      - { component: 'xenocara', cksum: '86da0e3116aa5effff047b9ebe5de099c76011ce59e0a323c0e7ccbae152b9e7' }
+      - { component: 'ports', cksum: '79c6fc497cfa23504e9cf5734b5c70b509b3caa433c5ecc316a8788001e52255' }
 
   - name: checkout OpenBSD sources (src, ports)
     git:
@@ -118,6 +119,14 @@
     git:
       repo: https://github.com/jasperla/openbsd-wip
       dest: /usr/ports/openbsd-wip
+      accept_hostkey: yes
+      clone: yes
+      update: yes
+
+  - name: checkout my own openbsd-wip
+    git:
+      repo: https://github.com/ligurio/openbsd-wip
+      dest: /usr/ports/mystuff
       accept_hostkey: yes
       clone: yes
       update: yes

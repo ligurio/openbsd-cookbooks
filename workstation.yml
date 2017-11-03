@@ -1,11 +1,10 @@
 ---
 - hosts: all
-  gather_facts: true
+  gather_facts: false
   user: root
 
   vars:
-    release: '6.1'
-    pkg_path: 'https://ftp.eu.openbsd.org/pub/OpenBSD/6.1/packages/amd64/'
+    pkg_path: "http://ftp.eu.openbsd.org/pub/OpenBSD/"
     workstation_package_set:
       - ImageMagick
       - ansible
@@ -121,20 +120,18 @@
       - vsftpd
 
   tasks:
-  - name: adjust installpath in /etc/pkg.conf
+  - name: /etc/installurl
     lineinfile:
       dest=/etc/pkg.conf
       backup=yes
-      line="installpath = {{ pkg_path }}"
-      regexp='^'
+      line="{{ pkg_path }}"
       state=present
-      insertafter=EOF
       create=True
-    become_method: su
+    become_method: doas
     become: true
 
-  - name: install required packages
+  - name: install packages
     openbsd_pkg: name={{ item }} state=present
     with_items: "{{ workstation_package_set }}"
-    become_method: su
+    become_method: doas
     become: true
