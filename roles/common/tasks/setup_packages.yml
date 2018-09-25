@@ -1,0 +1,11 @@
+---
+
+- name: adjust /etc/installurl
+  become: true
+  become_method: doas
+  lineinfile:
+    dest: /etc/pkg.conf
+    backup: yes
+    line: {{ pkg_path }}
+    state: present
+    create: True

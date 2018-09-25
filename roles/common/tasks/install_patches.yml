@@ -1,0 +1,7 @@
+---
+
+- name: install latest patches
+  when: ansible_os_family == "openbsd"
+  become: yes
+  become_method: doas
+  shell: syspatch

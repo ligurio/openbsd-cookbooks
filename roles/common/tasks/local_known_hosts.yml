@@ -1,0 +1,8 @@
+---
+
+## not available in 1.7.2, new in 1.9
+# - name: set known_hosts
+#   known_hosts:
+#     name: www.bronevichok.ru
+#     state: present
+#     key: ""

@@ -1,0 +1,8 @@
+---
+
+- name: install SSH key (sergeyb)
+  become: no
+  authorized_key:
+    key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDhtwivjb5jHkvezi4+TQ5pXxq/Ztlw4AR8uZ3/QIh243Ogk8eHJsm/71aymG74H7cUArTJKmDo2w+MkBT3qJnCZh3nfvI/53DMQKnNOjL5n3LbebyPYDJhHSY7vQLB/zmHVdT/JLVq+HQDneF0QJL0au7Dm/kcYJc2E6H1bDvQUcNX13F6ihHiv0M/L4z/E5rDqa7rlMa9K07cU+eaRrLiwOoAsbxGs8INpHI5hAwQ/CXKnaaKU03Lnv+2u5w9M96zkHhXkDiNvihInfObNeVwCo1sbZKuniiTXseZzV7/ureKqoHgKWrn5VxcjSgRRGdkDNctr8l6lcUHrJxeSfBt"
+    user: "{{ansible_user_id}}"
+    state: present

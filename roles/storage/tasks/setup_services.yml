@@ -1,0 +1,26 @@
+---
+
+- name: enable services on boot
+  when: ansible_os_family == "openbsd"
+  become: yes
+  become_method: doas
+  service:
+    name: "{{item}}"
+    state: started
+    enabled: True
+  with_items:
+    - cron
+    - dkimproxy_in
+    - dkimproxy_out
+    - httpd
+    - isakmpd
+    - monit
+    - npppd
+    - nsd
+    - ntpd
+    - pflogd
+    - slaacd
+    - slowcgi
+    - smtpd
+    - sshd
+    - syslogd

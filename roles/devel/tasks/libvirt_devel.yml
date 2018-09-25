@@ -1,0 +1,37 @@
+---
+
+- name: install packages
+  become: true
+  become_method: doas
+  openbsd_pkg:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - automake-1.8.5p9
+    - autoconf-2.57p4
+    - gettext-tools
+    - libxslt
+    - libtool
+    - unzip--
+
+- name: checkout libvirt sources
+  git:
+    repo: https://github.com/ligurio/libvirt
+    dest: "{{ansible_env.HOME}}/libvirt/"
+    accept_hostkey: yes
+    clone: yes
+    update: yes
+    force: yes
+    track_submodules: no
+
+- name: download gnulib sources
+  get_url:
+    url: https://github.com/coreutils/gnulib/archive/master.zip
+    dest: "{{ansible_env.HOME}}/"
+    mode: 0440
+
+- name: unarchive gnulib sources
+  unarchive:
+    src: "{{ansible_env.HOME}}/sources/gnulib-master.zip"
+    dest: "{{ansible_env.HOME}}/"
+    remote_src: True

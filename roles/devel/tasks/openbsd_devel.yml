@@ -1,0 +1,125 @@
+---
+
+- name: ensure SSH keys are installed
+  become: true
+  become_method: doas
+  authorized_key:
+    user: root
+    key: https://github.com/{{ github_user }}.keys
+
+- name: adjust .gitconfig
+  blockinfile:
+    dest: "{{ansible_env.HOME}}/.gitconfig"
+    create: yes
+    block: |
+      [user]
+         name = Sergey Bronnikov
+         email = sergeyb@bronevichok.ru
+      [push]
+         default = simple
+      [color]
+         ui = true
+
+- name: ensure user is in wsrc and staff login class
+  user:
+    name: landry
+    append: yes
+    groups: wsrc
+    login_class: staff
+
+- name: ensure /usr/ports are writable to wsrc
+  become: true
+  become_method: su
+  file:
+    state: directory
+    mode: 664
+    group: wsrc
+    recurse: yes
+    name={{item}}
+  with_items:
+    - /usr/ports
+
+- name: install openbsd devel packages
+  become: true
+  become_method: doas
+  when: ansible_os_family == "openbsd"
+  openbsd_pkg:
+    name: {{ item }}
+    state: present
+  with_items:
+    - git
+    - gmake
+    - mc
+    - the_silver_searcher
+    - vim--no_x11
+    - py-pip
+
+# pkg_add -D unsigned https://bronevichok.ru/trash/gcovr-3.3.tgz
+#  - name: install gcovr
+#    command: pkg_add -D unsigned https://bronevichok.ru/trash/gcovr-3.3.tgz
+#    become_method: doas
+#    become: true
+
+- name: create a directory
+  file: path=/home/sergeyb/{{ release }} state=directory
+
+- name: download release sources {src,ports}.tar.gz
+  get_url:
+     url: "{{ mirror }}/{{ release }}/{{ item.component }}.tar.gz"
+     dest: "{{ansible_env.HOME}}/{{ release }}/"
+     mode: 0440
+     sha256sum: "{{ item.cksum }}"
+  with_items:
+    - { component: 'src', cksum: '732d9eadb07aebb0ca08b2f94bd0695250b5ff7621942b061e9f4dfbb94a3550' }
+    - { component: 'sys', cksum: 'dd4e6cec36c331d0e71268bf7430cf143d5ab1708df0d759d82b9f1059ffa3d6' }
+    - { component: 'xenocara', cksum: '86da0e3116aa5effff047b9ebe5de099c76011ce59e0a323c0e7ccbae152b9e7' }
+    - { component: 'ports', cksum: '79c6fc497cfa23504e9cf5734b5c70b509b3caa433c5ecc316a8788001e52255' }
+
+- name: checkout OpenBSD sources (src, ports)
+  git:
+    repo: "https://github.com/openbsd/{{ item.component }}"
+    dest: "{{ item.path }}"
+    accept_hostkey: yes
+    clone: yes
+    update: yes
+  with_items:
+    - { component: 'src', path: '/usr/src' }
+    - { component: 'ports', path: '/usr/ports' }
+
+# signify -Gns /etc/signify/my-pkg.sec -p /etc/signify/my-pkg.pub
+# cd /usr/ports/packages/$(uname -p)
+# pkg_sign -s signify -s /etc/signify/my-pkg.sec -o signed -S all
+
+- name: checkout openbsd-wip
+  git:
+    repo: https://github.com/jasperla/openbsd-wip
+    dest: /usr/ports/openbsd-wip
+    accept_hostkey: yes
+    clone: yes
+    update: yes
+
+- name: checkout my own openbsd-wip repo
+  git:
+    repo: https://github.com/ligurio/openbsd-wip
+    dest: /usr/ports/mystuff
+    accept_hostkey: yes
+    clone: yes
+    update: yes
+
+- name: add PORTSDIR_PATH and SIGNING_PARAMETERS to /etc/mk.conf
+  blockinfile:
+    dest: /etc/mk.conf
+    content: |
+      PORTSDIR_PATH=${PORTSDIR}:$(PORTSDIR)/openbsd-wip:${PORTSDIR}/mystuff
+      SIGNING_PARAMETERS=-s signify -s /etc/signify/my-pkg.sec
+    backup: yes
+    state: present
+    create: True
+
+#  - name: checkout OpenBSD sources from CVS
+#    command: CVSROOT={{ cvs }}; cd /usr/ && cvs -d {{ item }} -q up -Pd
+#    with_items:
+#        - src
+#        - sys
+#        - xenocara
+#        - www

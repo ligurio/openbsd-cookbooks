@@ -1,0 +1,15 @@
+---
+
+- name: trace become_method
+  when: become_method is defined
+  debug:
+    var: become_method
+
+- name: install essentials
+  import_tasks: install_essentials.yml
+
+- name: configure user's crontab
+  import_tasks: user_cron.yml
+
+- name: setup services
+  import_tasks: setup_services.yml

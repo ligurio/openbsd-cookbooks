@@ -1,0 +1,8 @@
+---
+
+- name: backup cron job
+  cron:
+    name: "backup"
+    minute: "0"
+    hour: "*/2"
+    job: "backup"

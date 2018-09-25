@@ -1,0 +1,21 @@
+---
+
+- name: trace become_method
+  when: become_method is defined
+  debug:
+    var: become_method
+
+- name: install ssh keys
+  import_tasks: install_ssh_keys.yml
+
+- name: install patches
+  import_tasks: install_patches.yml
+
+- name: adjust user
+  import_tasks: adjust_user.yml
+
+- name: adjust known_hosts
+  import_tasks: local_known_hosts.yml
+
+- name: adjust packages
+  import_tasks: setup_packages.yml

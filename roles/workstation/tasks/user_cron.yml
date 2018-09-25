@@ -1,0 +1,29 @@
+---
+
+- name: offlineimap cron job
+  cron:
+    name: "offlineimap"
+    minute: "*/2"
+    job: "offlineimap"
+
+- name: backup cron job
+  cron:
+    name: "backup"
+    minute: "0"
+    hour: "*/2"
+    job: "backup"
+
+- name: fdm cron job
+  cron:
+    name: "fdm"
+    minute: "*/5"
+    job: "fdm -f /home/sergeyb/.fdm.conf -vvv -k fetch"
+    disabled: yes
+
+- name: grive cron job
+  cron:
+    name: "check dirs"
+    minute: "0"
+    hour: "*/2"
+    job: "grive"
+    disabled: yes

@@ -1,0 +1,21 @@
+---
+
+- name: install essentials (storage)
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "openbsd"
+  openbsd_pkg:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - cgit
+    - curl
+    - dkimproxy
+    - git
+    - goaccess
+    - monit
+    - noice
+    - restic
+    - rss2email
+    - ttyd
+    - sysclean

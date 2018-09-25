@@ -1,0 +1,27 @@
+---
+
+- name: add a new user
+  become: true
+  become_method: doas
+  user:
+    name: sergeyb
+    comment: "Sergey Bronnikov"
+    groups: wheel,wsrc
+    append: yes
+
+- name: ensure user is in wheel group
+  become: yes
+  user:
+    append: yes
+    groups: wheel
+    name: '{{ansible_user_id}}'
+
+- name: adjust doas(1) config
+  become: true
+  become_method: doas
+  blockinfile:
+    dest: /etc/doas.conf
+    create: yes
+    block: |
+      permit nopass keepenv setenv { ENV PS1 SSH_AUTH_SOCK } :wheel
+      permit nopass keepenv setenv { ENV PS1 SSH_AUTH_SOCK } :wsrc

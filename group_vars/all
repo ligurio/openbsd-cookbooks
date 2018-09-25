@@ -1,0 +1,16 @@
+--
+
+pkg_path: https://ftp.eu.openbsd.org/pub/OpenBSD
+
+is_workstation: false
+is_storage: false
+is_gw: false
+
+install_openbsd_testing: false
+install_openbsd_development: false
+install_libvirt_development: false
+
+timezone: Europe/Moscow
+release: '6.2'
+# https://www.openbsd.org/anoncvs.html
+cvs: 'anoncvs@mirror.osn.de:/cvs'

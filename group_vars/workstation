@@ -1,0 +1,7 @@
+---
+
+is_workstation: true
+ansible_connection: local
+
+install_openbsd_testing: false
+install_openbsd_development: false

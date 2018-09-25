@@ -1,0 +1,168 @@
+---
+
+- name: install essentials (workstation)
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "openbsd"
+  openbsd_pkg:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - ImageMagick
+    - adb
+    - ansible
+    - asciinema
+    - autocutsel
+    - baresip-gtk2
+    - btpd
+    - bzip2
+    - chromium
+    - cmus
+    - curl
+    - djview4
+    - exfat-fuse
+    - exiftran
+    - facette
+    - fdupes
+    - feh
+    - firefox
+    - fswebcam
+    - fzy
+    - geeqie
+    - ghostscript
+    - gimp
+    - gnome-themes-standard
+    - gnuplot--no_x11
+    - gpresent
+    - grap
+    - graphviz
+    - groff
+    - heirloom-doctools
+    - inkscape
+    - ispell
+    - ispell-russian
+    - jpegoptim
+    - jhead
+    - jq
+    - liberation-fonts
+    - libqrencode
+    - libreoffice
+    - libreoffice-i18n-ru
+    - lifelines
+    - lowdown
+    - maim
+    - mc
+    - moka-icon-theme
+    - mpv
+    - msmtp
+    - mutt
+    - noice
+    - ntfs_3g
+    - nvi--iconv
+    - offlineimap
+    - optipng
+    - p5-Image-ExifTool
+    - p7zip
+    - p7zip-rar
+    - passwdqc
+    - pdfpc
+    - pdfsandwich
+    - pdftk
+    - pianobar
+    - pidgin--gtkspell
+    - pjsua
+    - pngcrush
+    - restic
+    - rofi
+    - sblg
+    - scrot
+    - sxiv
+    - sysclean
+    - tango-icon-theme
+    - tango-icon-theme-extras
+    - tarsnap
+    - tarsnap-gui
+    - tesseract
+    - tesseract-rus
+    - texlive_base
+    - texlive_texmf-buildset
+    - texlive_texmf-minimal
+    - thunar
+    - tor
+    - unifi
+    - unpaper
+    - unzip
+    - urlview
+    - vim
+    - xbattbar
+    - xbindkeys
+    - xcalib
+    - xclip
+    - xsel
+    - xz
+    - zathura
+    - zathura-djvu
+    - zathura-pdf-poppler
+    - zathura-ps
+
+- name: create directories
+  become: no
+  file:
+    path: "{{item}}"
+    state: "directory"
+    owner: '{{ansible_user_id}}'
+  with_items:
+    - "{{ansible_env.HOME}}/sources/"
+    - "{{ansible_env.HOME}}/bin/"
+
+- name: install python
+  become: yes
+  when: ansible_os_family == "openbsd"
+  xbps:
+    name: "{{item}}"
+    state: latest
+  with_items:
+    - python-pip
+    - python-virtualenv
+
+- name: install various development packages
+  become: yes
+  when: ansible_os_family == "openbsd"
+  openbsd_pkg:
+    name: "{{item}}"
+    state: latest
+  with_items:
+    - autoconf
+    - automake
+    - afl
+    - cbmc
+    - cflow
+    - cmake
+    - cmocka
+    - coq
+    - entr
+    - frama-c
+    - gcc
+    - git
+    - gmake
+    - go
+    - jupyter-notebook
+    - mscgen
+    - spin
+    - tcltutor
+    - tkdiff
+    - the_silver_searcher
+    - valgrind
+    - z3
+
+- name: install various games
+  when: ansible_distribution == "openbsd"
+  become: true
+  become_method: doas
+  openbsd_pkg:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - chessx
+    - openttd
+    - xmahjongg

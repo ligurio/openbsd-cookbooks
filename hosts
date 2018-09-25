@@ -1,0 +1,12 @@
+# see: http://docs.ansible.com/intro_inventory.html
+
+[workstation]
+pony.bronevichok.ru
+
+[gw]
+gw.bronevichok.ru
+
+[storage]
+git.bronevichok.ru
+
+[cloud]

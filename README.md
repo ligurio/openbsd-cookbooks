@@ -1,31 +1,33 @@
-OpenBSD cookbook
-================
+## OpenBSD cookbook
 
-This is OpenBSD cookbook. It consists from a set of Ansible playbooks allowing
-to setup [OpenBSD](http://www.openbsd.org/) for different usecases:
+This repository contains an [Ansible][a] playbook and set of roles for
+configuring an [OpenBSD][o] installation on a ThinkPad X1 Carbon laptop.
 
-* development
-* workstation
-* [regression testing](https://github.com/ligurio/openbsd-tests/)
+[a]: https://www.ansible.com/
+[o]: https://openbsd.org/
+
 
 ### Usage
 
 ```
-$ cat inventory
-box ansible_host=192.168.22.68 ansible_user=root ansible_python_interpreter=/usr/local/bin/python2.7
-$ ansible box -m raw -a "export PKG_PATH=http://ftp.eu.openbsd.org/pub/OpenBSD/6.0/packages/amd64/; pkg_add py-simplejson; ln -sf /usr/local/bin/python2.7 /usr/local/bin/python" -i inventory
-$ ansible-playbook box devel.yml -i inventory
+$ ansible-playbook workstation -i hosts machine.yml
 ```
 
-[Screencast](https://asciinema.org/a/9221)
+### License
 
-This playbook is distributed under the terms of BSD license.
-Author: Sergey Bronnikov [@estet](https://twitter.com/estet)
-
-### Similar projects
-
-* [OpenSMTPD](https://github.com/cw-ansible/cw.opensmtpd)
-* [etckeeper](https://github.com/cw-ansible/cw.etckeeper)
-* [ansible-opi](https://cgit.rhaalovely.net/ansible-opi/)
-* [Fedora-Setup](https://github.com/JayKayy/fedora-setup)
-* [@silentbicycle](https://github.com/silentbicycle/ansible_thinkpad)
+```
+/*
+ * Copyright (c) 2014-2018 Sergey Bronnikov <sergeyb@bronevichok.ru>
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
