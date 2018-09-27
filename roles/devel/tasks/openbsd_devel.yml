@@ -35,16 +35,16 @@
     mode: 664
     group: wsrc
     recurse: yes
-    name={{item}}
+    name: "{{item}}"
   with_items:
     - /usr/ports
 
 - name: install openbsd devel packages
   become: true
   become_method: doas
-  when: ansible_os_family == "openbsd"
+  when: ansible_os_family == "OpenBSD"
   openbsd_pkg:
-    name: {{ item }}
+    name: "{{item}}"
     state: present
   with_items:
     - git

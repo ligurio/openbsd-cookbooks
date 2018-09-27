@@ -6,6 +6,6 @@
   lineinfile:
     dest: /etc/pkg.conf
     backup: yes
-    line: {{ pkg_path }}
+    line: "{{pkg_path}}"
     state: present
     create: True

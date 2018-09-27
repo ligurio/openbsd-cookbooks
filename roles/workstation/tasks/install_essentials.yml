@@ -3,7 +3,7 @@
 - name: install essentials (workstation)
   become: yes
   become_method: doas
-  when: ansible_os_family == "openbsd"
+  when: ansible_os_family == "OpenBSD"
   openbsd_pkg:
     name: "{{item}}"
     state: present
@@ -39,8 +39,7 @@
     - groff
     - heirloom-doctools
     - inkscape
-    - ispell
-    - ispell-russian
+    - ispell--russian
     - jpegoptim
     - jhead
     - jq
@@ -80,7 +79,6 @@
     - sysclean
     - tango-icon-theme
     - tango-icon-theme-extras
-    - tarsnap
     - tarsnap-gui
     - tesseract
     - tesseract-rus
@@ -89,7 +87,6 @@
     - texlive_texmf-minimal
     - thunar
     - tor
-    - unifi
     - unpaper
     - unzip
     - urlview
@@ -117,17 +114,19 @@
 
 - name: install python
   become: yes
-  when: ansible_os_family == "openbsd"
-  xbps:
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  openbsd_pkg:
     name: "{{item}}"
     state: latest
   with_items:
-    - python-pip
-    - python-virtualenv
+    - py-virtualenv
+    - py-pip
 
 - name: install various development packages
   become: yes
-  when: ansible_os_family == "openbsd"
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
   openbsd_pkg:
     name: "{{item}}"
     state: latest
@@ -156,7 +155,7 @@
     - z3
 
 - name: install various games
-  when: ansible_distribution == "openbsd"
+  when: ansible_distribution == "OpenBSD"
   become: true
   become_method: doas
   openbsd_pkg:

@@ -1,7 +1,7 @@
 # see: http://docs.ansible.com/intro_inventory.html
 
 [workstation]
-pony.bronevichok.ru
+pony
 
 [gw]
 gw.bronevichok.ru

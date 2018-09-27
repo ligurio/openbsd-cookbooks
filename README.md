@@ -10,7 +10,8 @@ configuring an [OpenBSD][o] installation on a ThinkPad X1 Carbon laptop.
 ### Usage
 
 ```
-$ ansible-playbook workstation -i hosts machine.yml
+$ ansible-playbook --ask-become-pass --list-tasks -l localhost machine.yml
+$ ansible-playbook --ask-become-pass --list-tasks -l localhost machine.yml
 ```
 
 ### License

@@ -11,6 +11,7 @@
 
 - name: ensure user is in wheel group
   become: yes
+  become_method: doas
   user:
     append: yes
     groups: wheel

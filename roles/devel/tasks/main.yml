@@ -1,7 +1,9 @@
 ---
 
 - name: setup libvirt development env
+  when: install_libvirt_development is defined
   import_tasks: libvirt_devel.yml
 
 - name: setup openbsd development env
+  when: install_openbsd_development is defined
   import_tasks: openbsd_devel.yml

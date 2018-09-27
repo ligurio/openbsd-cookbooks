@@ -1,6 +1,6 @@
---
+---
 
-pkg_path: https://ftp.eu.openbsd.org/pub/OpenBSD
+ansible_python_interpreter: /usr/local/bin/python
 
 is_workstation: false
 is_storage: false
@@ -10,7 +10,8 @@ install_openbsd_testing: false
 install_openbsd_development: false
 install_libvirt_development: false
 
-timezone: Europe/Moscow
+pkg_path: 'https://ftp.eu.openbsd.org/pub/OpenBSD'
+timezone: 'Europe/Moscow'
 release: '6.2'
 # https://www.openbsd.org/anoncvs.html
 cvs: 'anoncvs@mirror.osn.de:/cvs'

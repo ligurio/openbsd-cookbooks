@@ -1,7 +1,7 @@
 ---
 
 - name: enable services on boot
-  when: ansible_os_family == "openbsd"
+  when: ansible_os_family == "OpenBSD"
   become: yes
   become_method: doas
   service:

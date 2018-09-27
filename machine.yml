@@ -18,6 +18,5 @@
 - hosts: cloud
   roles:
     - common
-    - { role: libvirt_development, when: is_libvirt_development }
-    - { role: openbsd_development, when: is_openbsd_development }
-    - { role: openbsd_testing, when: is_openbsd_development }
+    - { role: devel }
+    - { role: testing }

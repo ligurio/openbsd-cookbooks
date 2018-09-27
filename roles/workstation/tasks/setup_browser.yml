@@ -1,8 +1,38 @@
 ---
 
 # http://kb.mozillazine.org/Profile_folder_-_Firefox
-# https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Alternative_distribution_options/Sideloading_add-ons
+## https://developer.mozilla.org/en-US/Firefox/Enterprise_deployment
+## https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Alternative_distribution_options/Sideloading_add-ons
 # https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/tools/NSS_Tools_certutil
+## http://www.fvue.nl/wiki/Ansible:_Install_Firefox_extension
+## http://askubuntu.com/questions/73474/how-to-install-firefox-addon-from-command-line-in-scripts
+## http://kb.mozillazine.org/Installing_extensions
+## https://www.morbo.org/2018/05/linux-sandboxing-improvements-in_10.html
 
 # TODO: setup firefox extensions
 # TODO: import certificates
+
+- name: ensure package firefox is installed
+  when: ansible_os_family == "OpenBSD"
+  openbsd_pkg:
+    name: firefox
+    state: present
+
+- name: ensure download directory exists
+  file:
+    dest: "{{ansible_env.HOME}}/Downloads/"
+    state: directory
+    mode: '0700'
+
+## https://github.com/pyllyukko/user.js/
+#- name: download harden user.js
+#  get_url:
+#    url: 'https://raw.githubusercontent.com/pyllyukko/user.js/b95fc165d72d49a8202eb56e0f2cf6bb273a801b/user.js'
+#    checksum: 'sha256:330c54106c483a89167a90f0a6d3442b83f3407af000e632bdef6f105c5f2596'
+#    dest: "{{ fxjs_path }}.orig"
+#    mode: '0644'
+#    backup: yes
+
+# https://github.com/pyllyukko/user.js/blob/master/CAs.md
+# copy cert8.db to browser/defaults/profile
+# https://mike.kaply.com/2012/03/30/customizing-firefox-default-profiles/

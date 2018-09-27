@@ -1,0 +1,77 @@
+---
+
+- name: install various packages
+  when: ansible_distribution == "openbsd"
+  become: true
+  become_method: doas
+  openbsd_pkg:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - py-test
+    - py-pip
+    - git
+
+- name: ensure SSH keys are installed
+  become: true
+  become_method: doas
+  authorized_key:
+    user: root
+    # FIXME
+    key: https://github.com/{{ github_user }}.keys
+
+- name: adjust sysctl parameters
+  become: true
+  become_method: doas
+  sysctl:
+    name: "{{item.name}}"
+    value: "{{item.value}}"
+    state: present
+    sysctl_file: /etc/sysctl.conf
+  with_items:
+    - { name: kern.watchdog.auto, value: 1 }
+    - { name: kern.watchdog.auto, value: 1 }
+    - { name: kern.watchdog.period, value: 10 }
+    - { name: kern.nosuidcoredump, value: 2 }
+    - { name: ddb.panic, value: 1 }
+    - { name: ddb.console, value: 1 }
+    - { name: ddb.log, value: 1 }
+    - { name: ddb.trigger, value: 1 }
+
+- name: checkout source code of regression tests
+  git:
+    repo: https://github.com/ligurio/openbsd-tests
+    dest: /home/regress/openbsd-tests
+    accept_hostkey: yes
+    clone: yes
+    update: yes
+
+- name: disable cron(8)
+  become: true
+  become_method: doas
+  file:
+    path: /etc/{{ item }}
+    mode: 0555
+  with_items:
+      - daily
+      - weekly
+      - monthly
+
+- name: enable watchdogd service in the rc.conf.local
+  become: true
+  become_method: doas
+  lineinfile:
+    dest: /etc/rc.conf.local
+    backup: yes
+    line: "watchdogd_flags=\"-i 3 -p 30\""
+    regexp: '^'
+    state: present
+    insertafter: EOF
+    create: True
+
+- name: start watchdog
+  become: true
+  become_method: doas
+  service:
+    name: watchdog
+    state: started
