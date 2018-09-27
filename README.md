@@ -9,9 +9,17 @@ configuring an [OpenBSD][o] installation on a ThinkPad X1 Carbon laptop.
 
 ### Usage
 
+- list all tasks that would be executed:
 ```
 $ ansible-playbook --ask-become-pass --list-tasks -l localhost machine.yml
-$ ansible-playbook --ask-become-pass --list-tasks -l localhost machine.yml
+```
+- when changing files and templates, show the differences in those files:
+```
+$ ansible-playbook --ask-become-pass --check --diff -i hosts -l pony machine.yml
+```
+- runs playbook with executing the defined tasks:
+```
+$ ansible-playbook --ask-become-pass -i hosts -l pony machine.yml
 ```
 
 ### License
