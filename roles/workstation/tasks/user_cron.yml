@@ -25,5 +25,5 @@
     name: "check dirs"
     minute: "0"
     hour: "*/2"
-    job: "grive"
+    job: "cd /home/sergeyb/gdrive/ && grive"
     disabled: yes
