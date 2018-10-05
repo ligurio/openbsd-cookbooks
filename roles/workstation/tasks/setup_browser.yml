@@ -1,16 +1,6 @@
 ---
 
-# http://kb.mozillazine.org/Profile_folder_-_Firefox
-## https://developer.mozilla.org/en-US/Firefox/Enterprise_deployment
-## https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Alternative_distribution_options/Sideloading_add-ons
-# https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/tools/NSS_Tools_certutil
-## http://www.fvue.nl/wiki/Ansible:_Install_Firefox_extension
-## http://askubuntu.com/questions/73474/how-to-install-firefox-addon-from-command-line-in-scripts
-## http://kb.mozillazine.org/Installing_extensions
-## https://www.morbo.org/2018/05/linux-sandboxing-improvements-in_10.html
-
-# TODO: setup firefox extensions
-# TODO: import certificates
+# TODO: set default search engine
 
 - name: ensure package firefox is installed
   when: ansible_os_family == "OpenBSD"
@@ -24,15 +14,30 @@
     state: directory
     mode: '0700'
 
-## https://github.com/pyllyukko/user.js/
-#- name: download harden user.js
-#  get_url:
-#    url: 'https://raw.githubusercontent.com/pyllyukko/user.js/b95fc165d72d49a8202eb56e0f2cf6bb273a801b/user.js'
-#    checksum: 'sha256:330c54106c483a89167a90f0a6d3442b83f3407af000e632bdef6f105c5f2596'
-#    dest: "{{ fxjs_path }}.orig"
-#    mode: '0644'
-#    backup: yes
+# TODO:
+# Firefox: http://www.fvue.nl/wiki/Ansible:_Install_Firefox_extension
+# Firefox: https://github.com/alzadude/ansible-firefox-addon
+# Chromium: https://github.com/cmprescott/ansible-role-chrome
+- name: download browser extensions
+  get_url:
+    url: "{{item.url}}"
+    dest: "{{item.dest}}"
+  items:
+    - { url: 'https://addons.mozilla.org/firefox/downloads/file/1066979/tridactyl-1.14.0-an+fx.xpi', dest: "{{ansible_env.HOME}}/tridactyl-1.14.0-an+fx.xpi" }
+    - { url: 'https://addons.mozilla.org/firefox/downloads/file/1081305/bitwarden_free_password_manager-1.32.1-fx.xpi', dest: "{{ansible_env.HOME}}/bitwarden_free_password_manager-1.32.1-fx.xpi" }
+    - { url: 'https://addons.mozilla.org/firefox/downloads/file/1084668/privacy_badger-2018.9.20-an+fx.xpi', dest: "{{ansible_env.HOME}}/privacy_badger-2018.9.20-an+fx.xpi" }
+    - { url: 'https://addons.mozilla.org/firefox/downloads/file/970953/neat_url-4.1.5-an+fx.xpi?src=dp-btn-primary', dest: "{{ansible_env.HOME}}/neat_url-4.1.5-an+fx.xpi?src=dp-btn-primary" }
+    - { url: 'https://addons.mozilla.org/firefox/downloads/file/1082984/https_everywhere-2018.9.19-an+fx.xpi', dest: "{{ansible_env.HOME}}/https_everywhere-2018.9.19-an+fx.xpi" }
+    - { url: 'https://addons.mozilla.org/firefox/downloads/file/954445/cookie_autodelete-2.2.0-an+fx.xpi?src=dp-btn-primary', dest: "{{ansible_env.HOME}}/cookie_autodelete-2.2.0-an+fx.xpi?src=dp-btn-primary" }
+    - { url: 'https://addons.mozilla.org/firefox/downloads/file/1077146/noscript_security_suite-10.1.9.6-an+fx.xpi?src=dp-btn-primary', dest: '{{ansible_env.HOME}}/noscript_security_suite-10.1.9.6-an+fx.xpi?src=dp-btn-primary'}
 
-# https://github.com/pyllyukko/user.js/blob/master/CAs.md
-# copy cert8.db to browser/defaults/profile
-# https://mike.kaply.com/2012/03/30/customizing-firefox-default-profiles/
+- name: download certificates
+  get_url:
+    url: http://vpnhelp.kaspersky.com/Applications/certificates.zip
+    dest: /tmp/certificates.zip
+    mode: '0644'
+
+# https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/tools/NSS_Tools_certutil
+# TODO
+- name: install certificates
+  command: echo

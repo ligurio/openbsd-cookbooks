@@ -1,0 +1,23 @@
+---
+
+# search application in /usr/local/share/applications/
+# or touch your own in ~/.local/share/applications/
+# $ xdg-mime query default $(xdg-mime query filetype /home/sergeyb/Downloads/thecbook.pdf)
+# $ xdg-mime default zathura.desktop application/pdf
+# $ xdg-mime query default application/pdf
+
+# See also: $HOME/.config/mimeapps.list
+- name: set default applications with xdg-mime(1)
+  command: xdg-mime default "{{item.app}}" "{{item.type}}"
+  items:
+    - { app: 'zathura.desktop', type: 'application/pdf' }
+    - { app: 'zathura.desktop', type: 'application/ps' }
+    - { app: 'geeqie.desktop', type: 'image/jpeg' }
+    - { app: 'firefox.desktop', type: 'x-scheme-handler/http' }
+    - { app: 'firefox.desktop', type: 'x-scheme-handler/https' }
+    - { app: 'firefox.desktop', type: 'text/html' }
+    - { app: 'libreoffice.desktop', type: 'application/zip' }
+    - { app: 'libreoffice.desktop', type: 'application/octet-stream' }
+
+- name: set default browser
+  command: xdg-settings set default-web-browser firefox.desktop

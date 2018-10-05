@@ -1,0 +1,38 @@
+---
+
+- name: ensure package libreoffice is installed
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  openbsd_pkg:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - libreoffice
+    - libreoffice-i18n-ru
+
+# https://extensions.libreoffice.org/extensions/lorequality
+# https://extensions.libreoffice.org/extensions/webdav-integration
+# https://extensions.libreoffice.org/extensions/writer2epub
+# known issue: https://github.com/ansible/ansible/issues/16052
+- name: download writer2epub extension
+  become: yes
+  become_method: doas
+  become_user: "{{ansible_user_id}}"
+  get_url:
+    url: "{{item.url}}"
+    dest: "{{item.dest}}"
+  with_items:
+    - { url: 'http://writer2epub.it/wp-content/files/writer2epub.oxt', dest: '/tmp/writer2epub.oxt' }
+    - { url: 'https://extensions.libreoffice.org/extensions/webdav-integration/1.0.1/@@download/file/libreoffice_webdav_1.0.1.oxt', dest: '/tmp/libreoffice_webdav_1.0.1.oxt' }
+    - { url: 'https://extensions.libreoffice.org/extensions/lorequality/0-21.7/@@download/file/LORequality_0.21.7.oxt', dest: '/tmp/LORequality_0.21.7.oxt' }
+
+# https://help.libreoffice.org/Common/Extension_Manager
+- name: install libreoffice extensions
+  command: unopkg add --shared "{{item}}"
+  args:
+    chdir: /tmp/
+  with_items:
+    - LORequality_0.21.7.oxt
+    - libreoffice_webdav_1.0.1.oxt
+    - writer2epub.oxt
