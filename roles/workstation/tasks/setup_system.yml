@@ -1,0 +1,77 @@
+---
+
+# TODO:
+# - /etc/hotplug/
+# - /etc/iked/
+
+- name: setup sysctl.conf
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: sysctl.conf
+    dest: /etc/sysctl.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: setup printcap
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  when: DISABLED is not defined
+  copy:
+    src: printcap
+    dest: /etc/printcap
+    owner: root
+    group: root
+    mode: 0644
+
+- name: setup /etc/apm/suspend
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: suspend
+    dest: /etc/apm/suspend
+    owner: root
+    group: root
+    mode: 0644
+
+- name: setup hostname.if
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: "{{item}}"
+    dest: "/etc/{{item}}"
+    owner: root
+    group: root
+    mode: 0640
+  with_items:
+    - "hostname.em0"
+    - "hostname.trunk0"
+    - "hostname.vether0"
+
+- name: setup rc.conf.local
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: rc.conf.local
+    dest: /etc/rc.conf.local
+    owner: root
+    group: root
+    mode: 0644
+
+- name: setup timezone
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  file:
+    src: "/usr/share/zoneinfo/{{timezone}}"
+    dest: /etc/localtime
+    owner: root
+    group: wheel
+    mode: 0655
+    state: link

@@ -5,6 +5,9 @@
   debug:
     var: become_method
 
+- name: setup system
+  import_tasks: setup_system.yml
+
 - name: install essentials
   import_tasks: install_essentials.yml
 
@@ -20,6 +23,5 @@
 - name: setup browser
   import_tasks: setup_browser.yml
 
-# TODO: setup backup
-# TODO: setup timezone
-# TODO: setup network interfaces
+- name: setup office
+  import_tasks: setup_office.yml

@@ -1,0 +1,7 @@
+apmd_flags="-A -Z 10"
+dhcpd_flags=vether0
+httpd_flags=
+slowcgi_flags=
+tor_flags=
+vmd_flags=
+xenodm_flags=
