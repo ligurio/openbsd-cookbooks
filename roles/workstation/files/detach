@@ -1,0 +1,44 @@
+#!/bin/sh
+
+DEVCLASS=$1
+DEVNAME=$2
+
+case $DEVCLASS in
+0)
+	# generic devices
+	case $DEVNAME in
+	uplcom*)
+		;;
+
+	ucom*)
+		;;
+
+	uslcom*)
+		;;
+
+	uhid*)
+		;;
+
+	ugen*)
+			/usr/local/sbin/openct-control shutdown
+		;;
+
+	esac
+	;;
+
+2)
+	;;
+
+3)
+	;;
+
+4)
+	# tape device
+	;;
+
+5)
+	# serial line interface
+	;;
+esac
+
+exit 0

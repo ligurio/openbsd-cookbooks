@@ -1,31 +1,33 @@
 ---
 
-# TODO:
-# - /etc/hotplug/
-# - /etc/iked/
-
 - name: setup sysctl.conf
   become: yes
   become_method: doas
   when: ansible_os_family == "OpenBSD"
-  copy:
-    src: sysctl.conf
-    dest: /etc/sysctl.conf
-    owner: root
-    group: root
-    mode: 0644
+  sysctl:
+    name: "{{item.name}}"
+    value: "{{item.value}}"
+    sysctl_set: yes
+    sysctl_file: /sysctl.conf
+  with_items:
+    - { name: "machdep.lidaction", value: "1" }
+    - { name: "machdep.allowaperture", value: "2" }
+    - { name: "net.inet.ip.forwarding", value: "1" }
 
-- name: setup printcap
+- name: setup hotplugd
   become: yes
   become_method: doas
   when: ansible_os_family == "OpenBSD"
-  when: DISABLED is not defined
   copy:
-    src: printcap
-    dest: /etc/printcap
+    src: "{{item}}"
+    dest: "/etc/hotplugd/{{item}}"
     owner: root
     group: root
     mode: 0644
+  with_items:
+    - "attach"
+    - "detach"
+  # FIXME: restart hotplugd(8)
 
 - name: setup /etc/apm/suspend
   become: yes
@@ -38,7 +40,7 @@
     group: root
     mode: 0644
 
-- name: setup hostname.if
+- name: setup network interfaces
   become: yes
   become_method: doas
   when: ansible_os_family == "OpenBSD"

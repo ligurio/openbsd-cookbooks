@@ -1,0 +1,58 @@
+#!/bin/sh
+
+DEVCLASS=$1
+DEVNAME=$2
+
+case $DEVCLASS in
+0)
+	# generic devices
+	case $DEVNAME in
+	uplcom*)
+			# gpsd -N -n -D 2 /dev/ttyU$TTYNUM
+		;;
+	uslcom*)
+			# gpsd -N -n -D 2 /dev/ttyU$TTYNUM
+		;;
+	uhid*)
+		;;
+	ugen*)
+			# openct-control shutdown
+			# openct-control init
+		;;
+	esac
+	;;
+2)
+	# disk devices
+	disklabel=`/sbin/disklabel $DEVNAME 2>&1 | \
+	sed -n '/^label: /s/^label: //p'`
+	case $disklabel in
+	# WD 80 Gb USB HDD
+		0VE-08HDT0*)
+			mount -o nodev,nosuid /dev/"$DEVNAME"i /mnt/backup
+		;;
+	# WD 300 Gb USB HDD
+		3200AAJ*)
+			# mount -t ext2fs -o nodev,nosuid /dev/"$DEVNAME"i /mnt/storage
+		;;
+	# Apple iPod Shuffle
+		iPod*)
+			# mount_msdos -o nodev,nosuid /dev/"$DEVNAME"i /mnt/ipod
+		;;
+	esac
+	;;
+
+3)
+	# network devices; requires hostname.$DEVNAME
+	stat /etc/hostname.$DEVNAME && sh /etc/netstart $DEVNAME
+	;;
+
+4)
+	# tape device
+	;;
+
+5)
+	# serial line interface
+	;;
+esac
+
+exit 0
