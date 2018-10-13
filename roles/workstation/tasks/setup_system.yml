@@ -20,14 +20,13 @@
   when: ansible_os_family == "OpenBSD"
   copy:
     src: "{{item}}"
-    dest: "/etc/hotplugd/{{item}}"
+    dest: "/etc/hotplug/{{item}}"
     owner: root
-    group: root
+    group: wheel
     mode: 0644
   with_items:
     - "attach"
     - "detach"
-  # FIXME: restart hotplugd(8)
 
 - name: setup /etc/apm/suspend
   become: yes
@@ -37,7 +36,7 @@
     src: suspend
     dest: /etc/apm/suspend
     owner: root
-    group: root
+    group: wheel
     mode: 0644
 
 - name: setup network interfaces
@@ -48,7 +47,7 @@
     src: "{{item}}"
     dest: "/etc/{{item}}"
     owner: root
-    group: root
+    group: wheel
     mode: 0640
   with_items:
     - "hostname.em0"
@@ -63,7 +62,7 @@
     src: rc.conf.local
     dest: /etc/rc.conf.local
     owner: root
-    group: root
+    group: wheel
     mode: 0644
 
 - name: setup timezone
@@ -77,3 +76,15 @@
     group: wheel
     mode: 0655
     state: link
+
+# https://someonewhocares.org/hosts/hosts
+- name: setup /etc/hosts
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: hosts
+    dest: /etc/hosts
+    owner: root
+    group: wheel
+    mode: 0644
