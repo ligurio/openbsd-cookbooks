@@ -1,0 +1,252 @@
+127.0.0.1       localhost
+::1             localhost
+
+216.218.239.164 google.com       #} redirects to us2.startpage.com:443
+216.218.239.164 www.google.com   #} 216.218.239.164 is the IP address for the
+216.218.239.164 google.ca        #} Google frontend Startpage and automatically
+216.218.239.164 www.google.ca    #} switches to https (443), even if http (80)
+216.218.239.164 google.co.uk     #} is specified. SP is much more secure a
+216.218.239.164 www.google.co.uk #} search engine and far more privacy-friendly
+216.218.239.164 google.ie        #} than Google itself could ever hope to be.
+216.218.239.164 www.google.ie    #}
+
+127.0.0.1 i0.ytimg.com             #} mostly thumbnails, user pictures and
+127.0.0.1 i1.ytimg.com             #} other unnecessary graphic clutter. Feel
+127.0.0.1 i2.ytimg.com             #} free to leave blocked, as it also
+127.0.0.1 i3.ytimg.com             #} improves YT's loading time considerably
+127.0.0.1 i4.ytimg.com             #}
+127.0.0.1 i5.ytimg.com             #}
+
+127.0.0.1 s0.2mdn.net              #} comment out everything in this segment
+127.0.0.1 static.2mdn.net          #} from this point down if you need to use
+127.0.0.1 www.youtube-nocookie.com #} YT, since these next few servers are its
+127.0.0.1 youtube-nocookie.com     #} dependencies and can cause major
+127.0.0.1 youtube-noscript.com     #} functionality problems if blocked
+127.0.0.1 www.youtube-noscript.com #}
+127.0.0.1 s.ytimg.com              #} (s.ytimg.com is where the player is)
+
+#various other G services - main pages
+127.0.0.1 accounts.google.com #} comment out if you need to use G-mail
+127.0.0.1 mail.google.com     #}
+127.0.0.1 gmail.com           #}
+127.0.0.1 www.gmail.com       #}
+127.0.0.1 sites.google.com
+127.0.0.1 code.google.com
+127.0.0.1 maps.google.com
+127.0.0.1 groups.google.com #} real Usenetters don't use Google Groups
+127.0.0.1 gg.google.com     #}
+127.0.0.1 plusone.google.com
+127.0.0.1 fusion.google.com
+127.0.0.1 plus.google.com
+127.0.0.1 goog.le
+127.0.0.1 youtu.be #youtu.be/AaBbCcDdEeFf is the same as youtube.com/watch?v=AaBbCcDdEeFf
+
+#and here's where everything else originates. What a mess!
+127.0.0.1 domains.googlesyndication.com
+127.0.0.1 video-stats.video.google.com
+127.0.0.1 4.afs.googleadservices.com
+127.0.0.1 pagead2.googleadservices.com
+127.0.0.1 partner.googleadservices.com
+127.0.0.1 www.googleadservices.com
+127.0.0.1 apps5.oingo.com
+127.0.0.1 www.appliedsemantics.com
+127.0.0.1 service.urchin.com
+127.0.0.1 pagead2.googlesyndication.com
+127.0.0.1 googlesyndication.com
+127.0.0.1 ads.googlesyndication.com
+127.0.0.1 www.googlesyndication.com
+127.0.0.1 adwords.google.com
+127.0.0.1 googleanalytics.com
+127.0.0.1 ssl.googleanalytics.com
+127.0.0.1 www.googleanalytics.com
+127.0.0.1 google-analytics.com
+127.0.0.1 .google-analytics.com
+127.0.0.1 ssl.google-analytics.com
+127.0.0.1 www.google-analytics.com
+127.0.0.1 www.googletagservices.com
+127.0.0.1 ssl.googletagservices.com
+127.0.0.1 .googletagservices.com
+127.0.0.1 googletagservices.com
+127.0.0.1 www.gstatic.com
+127.0.0.1 csi.gstatic.com
+127.0.0.1 doubleclick.com
+127.0.0.1 .doubleclick.com
+127.0.0.1 gan.doubleclick.net
+127.0.0.1 doubleclick.net
+127.0.0.1 .doubleclick.net
+127.0.0.1 ad.doubleclick.net
+127.0.0.1 ad-g.doubleclick.net
+127.0.0.1 googleads.g.doubleclick.net
+127.0.0.1 ad.ie.doubleclick.net
+127.0.0.1 static.doubleclick.net
+127.0.0.1 partner.googleadservices.com
+127.0.0.1 ssl.gstatic.com
+127.0.0.1 clients.google.com
+127.0.0.1 clients1.google.com
+127.0.0.1 clients2.google.com
+127.0.0.1 clients3.google.com
+127.0.0.1 clients4.google.com
+127.0.0.1 clients5.google.com
+127.0.0.1 clients6.google.com
+127.0.0.1 clients7.google.com
+127.0.0.1 clients8.google.com
+127.0.0.1 clients9.google.com
+127.0.0.1 clients0.google.com
+127.0.0.1 sassets.vevo.com   #} some Youtube-related ad servers
+127.0.0.1 2975c.v.fwmrm.net  #}
+127.0.0.1 m.v.fwmrm.net      #}
+127.0.0.1 .fwmrm.net         #}
+127.0.0.1 ytimg.googleusercontent.com # needless Youtube-related graphic clutter
+127.0.0.1 html5shiv.googlecode.com
+127.0.0.1 b3.caspio.com
+127.0.0.1 ajax.microsoft.com
+127.0.0.1 buttons.googlesyndication.com
+127.0.0.1 googleusercontent.com
+127.0.0.1 lh0.googleusercontent.com
+127.0.0.1 lh1.googleusercontent.com
+127.0.0.1 lh2.googleusercontent.com
+127.0.0.1 lh3.googleusercontent.com
+127.0.0.1 lh4.googleusercontent.com
+127.0.0.1 lh5.googleusercontent.com
+127.0.0.1 lh6.googleusercontent.com
+127.0.0.1 lh7.googleusercontent.com
+127.0.0.1 lh8.googleusercontent.com
+127.0.0.1 lh9.googleusercontent.com
+127.0.0.1 s.googleusercontent.com
+127.0.0.1 s0.googleusercontent.com
+127.0.0.1 s1.googleusercontent.com
+127.0.0.1 s2.googleusercontent.com
+127.0.0.1 s3.googleusercontent.com
+127.0.0.1 s4.googleusercontent.com
+127.0.0.1 s5.googleusercontent.com
+127.0.0.1 s6.googleusercontent.com
+127.0.0.1 s7.googleusercontent.com
+127.0.0.1 s8.googleusercontent.com
+127.0.0.1 s9.googleusercontent.com
+127.0.0.1 chrome.google.com
+127.0.0.1 fonts.googleapis.com
+127.0.0.1 checkout.google.com
+127.0.0.1 .ggpht.com
+127.0.0.1 lh1.ggpht.com
+127.0.0.1 lh2.ggpht.com
+127.0.0.1 lh3.ggpht.com
+127.0.0.1 lh4.ggpht.com
+127.0.0.1 lh5.ggpht.com
+127.0.0.1 lh6.ggpht.com
+127.0.0.1 fonts.googleapis.com
+127.0.0.1 gp1.googleusercontent.com
+127.0.0.1 gp2.googleusercontent.com
+127.0.0.1 gp3.googleusercontent.com
+127.0.0.1 gp4.googleusercontent.com
+127.0.0.1 gp5.googleusercontent.com
+127.0.0.1 gp6.googleusercontent.com
+127.0.0.1 gp7.googleusercontent.com
+127.0.0.1 chart.apis.google.com
+
+#crap from Doubleclick - mostly ad/spyware servers
+127.0.0.1 conversion-pixel.invitemedia.com
+127.0.0.1 analytics-api-samples.googlecode.com
+127.0.0.1 m1.2mdn.net
+127.0.0.1 rmcdn.2mdn.net
+127.0.0.1 rmcdn.f.2mdn.net
+127.0.0.1 n339.asp-cc.com
+127.0.0.1 ads.cc-dt.com
+127.0.0.1 clickserve.cc-dt.com
+127.0.0.1 creative.cc-dt.com
+127.0.0.1 clickserve.dartsearch.net
+127.0.0.1 clickserve.eu.dartsearch.net
+127.0.0.1 clickserve.uk.dartsearch.net
+127.0.0.1 doubleclick.net
+127.0.0.1 ad.doubleclick.net
+127.0.0.1 ad-g.doubleclick.net
+127.0.0.1 ad2.doubleclick.net
+127.0.0.1 ad.ae.doubleclick.net
+127.0.0.1 ad.ar.doubleclick.net
+127.0.0.1 ad.at.doubleclick.net
+127.0.0.1 ad.au.doubleclick.net
+127.0.0.1 ad.be.doubleclick.net
+127.0.0.1 ad.br.doubleclick.net
+127.0.0.1 ad.ca.doubleclick.net
+127.0.0.1 ad.ch.doubleclick.net
+127.0.0.1 ad.cl.doubleclick.net
+127.0.0.1 ad.cn.doubleclick.net
+127.0.0.1 ad.de.doubleclick.net
+127.0.0.1 ad.dk.doubleclick.net
+127.0.0.1 ad.es.doubleclick.net
+127.0.0.1 ad.fi.doubleclick.net
+127.0.0.1 ad.fr.doubleclick.net
+127.0.0.1 ad.gr.doubleclick.net
+127.0.0.1 ad.hk.doubleclick.net
+127.0.0.1 ad.hr.doubleclick.net
+127.0.0.1 ad.hu.doubleclick.net
+127.0.0.1 ad.ie.doubleclick.net
+127.0.0.1 ad.in.doubleclick.net
+127.0.0.1 ad.jp.doubleclick.net
+127.0.0.1 ad.kr.doubleclick.net
+127.0.0.1 ad.it.doubleclick.net
+127.0.0.1 ad.nl.doubleclick.net
+127.0.0.1 ad.no.doubleclick.net
+127.0.0.1 ad.nz.doubleclick.net
+127.0.0.1 ad.pl.doubleclick.net
+127.0.0.1 ad.pt.doubleclick.net
+127.0.0.1 ad.ro.doubleclick.net
+127.0.0.1 ad.ru.doubleclick.net
+127.0.0.1 ad.se.doubleclick.net
+127.0.0.1 ad.sg.doubleclick.net
+127.0.0.1 ad.si.doubleclick.net
+127.0.0.1 ad.terra.doubleclick.net
+127.0.0.1 ad.th.doubleclick.net
+127.0.0.1 ad.tw.doubleclick.net
+127.0.0.1 ad.uk.doubleclick.net
+127.0.0.1 ad.us.doubleclick.net
+127.0.0.1 ad.za.doubleclick.net
+127.0.0.1 ad.n2434.doubleclick.net
+127.0.0.1 ad-emea.doubleclick.net
+127.0.0.1 creatives.doubleclick.net
+127.0.0.1 dfp.doubleclick.net
+127.0.0.1 feedads.g.doubleclick.net
+127.0.0.1 fls.doubleclick.net
+127.0.0.1 fls.uk.doubleclick.net
+127.0.0.1 googleads.g.doubleclick.net
+127.0.0.1 ir.doubleclick.net
+127.0.0.1 iv.doubleclick.net
+127.0.0.1 m.doubleclick.net
+127.0.0.1 motifcdn.doubleclick.net
+127.0.0.1 motifcdn2.doubleclick.net
+127.0.0.1 n4052ad.doubleclick.net
+127.0.0.1 n4403ad.doubleclick.net
+127.0.0.1 n479ad.doubleclick.net
+127.0.0.1 paypalssl.doubleclick.net
+127.0.0.1 pubads.g.doubleclick.net
+127.0.0.1 s2.video.doubleclick.net
+127.0.0.1 survey.g.doubleclick.net
+127.0.0.1 anon.doubleclick.speedera.net #not sure if this is an actual DC server or not, but here it is
+127.0.0.1 doubleclick.ne.jp
+127.0.0.1 www3.doubleclick.net
+127.0.0.1 www.doubleclick.net
+127.0.0.1 doubleclick.com
+127.0.0.1 www2.doubleclick.com
+127.0.0.1 www3.doubleclick.com
+127.0.0.1 www.doubleclick.com
+127.0.0.1 tpc.googlesyndication.com
+127.0.0.1 ad.rs.doubleclick.net
+127.0.0.1 affiliate.2mdn.net
+127.0.0.1 clickserve.us2.dartsearch.net
+127.0.0.1 ad-apac.doubleclick.net
+127.0.0.1 ad.mo.doubleclick.net
+127.0.0.1 adclick.g.doubleclick.net
+127.0.0.1 gan.doubleclick.net
+127.0.0.1 googleads2.g.doubleclick.net
+127.0.0.1 n4061ad.hk.doubleclick.net
+127.0.0.1 securepubads.g.doubleclick.net
+127.0.0.1 ad.bg.doubleclick.net
+127.0.0.1 cm.g.doubleclick.net
+127.0.0.1 stats.g.doubleclick.net
+127.0.0.1 fls.au.doubleclick.net
+127.0.0.1 log2.quintelligence.com
+127.0.0.1 www.destinationurl.com
+127.0.0.1 doubleclick.shockwave.com
+127.0.0.1 www3.webhostingtalk.com
+127.0.0.1 ad.mirror.co.uk
+127.0.0.1 host3.adhese.be
+127.0.0.1 mcmads.mediacapital.pt
