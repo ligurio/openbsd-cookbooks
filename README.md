@@ -1,4 +1,4 @@
-## OpenBSD cookbook
+## OpenBSD cookbooks
 
 This repository contains an [Ansible][a] playbook and set of roles for
 configuring an [OpenBSD][o] installation on a ThinkPad X1 Carbon laptop.
