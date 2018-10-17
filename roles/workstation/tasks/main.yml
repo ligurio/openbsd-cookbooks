@@ -25,3 +25,6 @@
 
 - name: setup office
   import_tasks: setup_office.yml
+
+- name: setup vim
+  import_tasks: setup_vim.yml

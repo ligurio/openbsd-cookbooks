@@ -1,0 +1,30 @@
+---
+
+- name: ensure package vim is installed
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  openbsd_pkg:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - vim--gtk2-perl-python-ruby
+
+- name: create vim bundle directory
+  file:
+    path: "{{ansible_env.HOME}}/.vim/bundle"
+    owner: '{{ansible_user_id}}'
+    group: wheel
+    mode: 0755
+    state: directory
+
+- name: clone vundle
+  become: true
+  become_user: '{{ansible_user_id}}'
+  git:
+    repo: https://github.com/VundleVim/Vundle.vim
+    dest: '{{ansible_env.HOME}}/.vim/bundle/Vundle.vim'
+    update: no
+
+- name: install vim plugins
+  command: su - '{{ansible_user_id}}' -c "vim -E -s -c 'source ~/.vimrc' -c PluginInstall -c qall -V"
