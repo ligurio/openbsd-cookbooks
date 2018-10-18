@@ -22,7 +22,7 @@
   get_url:
     url: "{{item.url}}"
     dest: "{{item.dest}}"
-  items:
+  with_items:
     - { url: 'https://addons.mozilla.org/firefox/downloads/file/1066979/tridactyl-1.14.0-an+fx.xpi', dest: "{{ansible_env.HOME}}/tridactyl-1.14.0-an+fx.xpi" }
     - { url: 'https://addons.mozilla.org/firefox/downloads/file/1081305/bitwarden_free_password_manager-1.32.1-fx.xpi', dest: "{{ansible_env.HOME}}/bitwarden_free_password_manager-1.32.1-fx.xpi" }
     - { url: 'https://addons.mozilla.org/firefox/downloads/file/1084668/privacy_badger-2018.9.20-an+fx.xpi', dest: "{{ansible_env.HOME}}/privacy_badger-2018.9.20-an+fx.xpi" }
