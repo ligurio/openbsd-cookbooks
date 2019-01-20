@@ -40,3 +40,9 @@ $ ansible-playbook --ask-become-pass -i hosts -l pony machine.yml
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
+```
+
+### See also
+
+* https://github.com/geerlingguy/mac-dev-playbook
+* https://github.com/silentbicycle/ansible_thinkpad
