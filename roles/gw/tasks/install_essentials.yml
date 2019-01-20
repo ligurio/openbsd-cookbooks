@@ -12,5 +12,5 @@
     - monit
     - polipo
     - sec
-    - tor
     - sysclean
+    - tor
