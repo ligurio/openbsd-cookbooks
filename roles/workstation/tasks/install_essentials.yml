@@ -9,12 +9,8 @@
     state: present
   with_items:
     - ImageMagick
-    - adb
     - ansible
     - asciinema
-    - autocutsel
-    - baresip-gtk2
-    - btpd
     - bzip2
     - chromium
     - cmus
@@ -22,7 +18,6 @@
     - djview4
     - exfat-fuse
     - exiftran
-    - facette
     - fdupes
     - feh
     - firefox
@@ -33,13 +28,13 @@
     - gimp
     - gnome-themes-standard
     - gnuplot--no_x11
-    - gpresent
     - grap
     - graphviz
     - groff
     - heirloom-doctools
     - inkscape
     - ispell--russian
+    - isync
     - jpegoptim
     - jhead
     - jq
@@ -59,7 +54,7 @@
     - noice
     - ntfs_3g
     - nvi--iconv
-    - offlineimap
+    - nnn
     - optipng
     - p5-Image-ExifTool
     - p7zip
@@ -72,13 +67,15 @@
     - pidgin--gtkspell
     - pjsua
     - pngcrush
+    - py-casttube
     - remmina
     - restic
     - rofi
-    - sblg
+    - rtl-sdr
     - scrot
     - sxiv
     - sysclean
+    - swish-e
     - tango-icon-theme
     - tango-icon-theme-extras
     - tarsnap-gui
@@ -137,9 +134,7 @@
     - automake
     - afl
     - cbmc
-    - cflow
     - cmake
-    - cmocka
     - coq
     - entr
     - frama-c
@@ -148,12 +143,10 @@
     - gmake
     - go
     - jupyter-notebook
-    - mscgen
     - spin
-    - tcltutor
+    - mscgen
     - tkdiff
     - the_silver_searcher
-    - valgrind
     - z3
 
 - name: install various games
