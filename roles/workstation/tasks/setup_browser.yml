@@ -1,6 +1,14 @@
 ---
 
-# TODO: set default search engine
+# https://www.privacytools.io/
+# Firefox configuration hardening https://github.com/pyllyukko/user.js
+# https://firefox-source-docs.mozilla.org/mozbase/
+# https://github.com/MozillaSecurity/ffpuppet
+# https://marionette-client.readthedocs.io/en/master/
+# https://firefox-puppeteer.readthedocs.io/en/master/
+# https://github.com/mozilla/ff-tool
+# Firefox: https://github.com/alzadude/ansible-firefox-addon
+# Chromium: https://github.com/cmprescott/ansible-role-chrome
 
 - name: ensure package firefox is installed
   when: ansible_os_family == "OpenBSD"
@@ -8,36 +16,47 @@
     name: firefox
     state: present
 
+- name: set firefox as default browser
+  command: firefox -setDefaultBrowserSection
+
+- name: set default search engine (TODO)
+  command: echo
+
 - name: ensure download directory exists
   file:
-    dest: "{{ansible_env.HOME}}/Downloads/"
+    dest: "/tmp/"
     state: directory
-    mode: '0700'
+    mode: "0700"
 
-# TODO:
-# Firefox: http://www.fvue.nl/wiki/Ansible:_Install_Firefox_extension
-# Firefox: https://github.com/alzadude/ansible-firefox-addon
-# Chromium: https://github.com/cmprescott/ansible-role-chrome
-- name: download browser extensions
-  get_url:
-    url: "{{item.url}}"
-    dest: "{{item.dest}}"
-  items:
-    - { url: 'https://addons.mozilla.org/firefox/downloads/file/1066979/tridactyl-1.14.0-an+fx.xpi', dest: "{{ansible_env.HOME}}/tridactyl-1.14.0-an+fx.xpi" }
-    - { url: 'https://addons.mozilla.org/firefox/downloads/file/1081305/bitwarden_free_password_manager-1.32.1-fx.xpi', dest: "{{ansible_env.HOME}}/bitwarden_free_password_manager-1.32.1-fx.xpi" }
-    - { url: 'https://addons.mozilla.org/firefox/downloads/file/1084668/privacy_badger-2018.9.20-an+fx.xpi', dest: "{{ansible_env.HOME}}/privacy_badger-2018.9.20-an+fx.xpi" }
-    - { url: 'https://addons.mozilla.org/firefox/downloads/file/970953/neat_url-4.1.5-an+fx.xpi?src=dp-btn-primary', dest: "{{ansible_env.HOME}}/neat_url-4.1.5-an+fx.xpi?src=dp-btn-primary" }
-    - { url: 'https://addons.mozilla.org/firefox/downloads/file/1082984/https_everywhere-2018.9.19-an+fx.xpi', dest: "{{ansible_env.HOME}}/https_everywhere-2018.9.19-an+fx.xpi" }
-    - { url: 'https://addons.mozilla.org/firefox/downloads/file/954445/cookie_autodelete-2.2.0-an+fx.xpi?src=dp-btn-primary', dest: "{{ansible_env.HOME}}/cookie_autodelete-2.2.0-an+fx.xpi?src=dp-btn-primary" }
-    - { url: 'https://addons.mozilla.org/firefox/downloads/file/1077146/noscript_security_suite-10.1.9.6-an+fx.xpi?src=dp-btn-primary', dest: '{{ansible_env.HOME}}/noscript_security_suite-10.1.9.6-an+fx.xpi?src=dp-btn-primary'}
-
-- name: download certificates
-  get_url:
-    url: http://vpnhelp.kaspersky.com/Applications/certificates.zip
-    dest: /tmp/certificates.zip
-    mode: '0644'
-
-# https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/tools/NSS_Tools_certutil
-# TODO
-- name: install certificates
+# privacy.resistFingerprinting = true
+# privacy.trackingprotection.enabled = true
+# browser.cache.offline.enable = false
+# browser.safebrowsing.malware.enabled = false
+# browser.safebrowsing.phishing.enabled = false
+# browser.send_pings = false
+# ??? browser.sessionstore.max_tabs_undo = 0
+# browser.urlbar.speculativeConnect.enabled = false
+# dom.battery.enabled = false
+# dom.event.clipboardevents.enabled = false
+# geo.enabled = false
+# media.navigator.enabled = false
+# network.cookie.cookieBehavior = 1
+# network.cookie.lifetimePolicy = 2
+# network.http.referer.trimmingPolicy = 2
+# network.http.referer.XOriginPolicy = 2
+# network.http.referer.XOriginTrimmingPolicy = 2
+# webgl.disabled = true
+- name: setup about:config (TODO)
   command: echo
+
+- name: ensure directory with certificates exists
+  file:
+    dest: "{{ansible_env.HOME}}/cert"
+    state: directory
+
+# https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Tools/certutil
+# https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/tools/NSS_Tools_certutil
+- name: install certificates in the the NSS database (TODO)
+  command: certutil -addstore "Root" "{{ansible_env.HOME}}/cert/{{item}}"
+  with_fileglob:
+    - "{{ansible_env.HOME}}/cert/*"
