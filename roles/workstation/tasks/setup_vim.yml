@@ -26,5 +26,7 @@
     dest: '{{ansible_env.HOME}}/.vim/bundle/Vundle.vim'
     update: no
 
+# TODO:
+# vim-addon-manager (https://github.com/MarcWeber/vim-addon-manager)
 - name: install vim plugins
   command: su - '{{ansible_user_id}}' -c "vim -E -s -c 'source ~/.vimrc' -c PluginInstall -c qall -V"

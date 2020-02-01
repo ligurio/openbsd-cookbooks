@@ -8,7 +8,7 @@
     name: "{{item.name}}"
     value: "{{item.value}}"
     sysctl_set: yes
-    sysctl_file: /sysctl.conf
+    sysctl_file: /etc/sysctl.conf
   with_items:
     - { name: "machdep.lidaction", value: "1" }
     - { name: "machdep.allowaperture", value: "2" }
