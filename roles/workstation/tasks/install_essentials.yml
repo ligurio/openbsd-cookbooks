@@ -21,8 +21,10 @@
     - fdupes
     - feh
     - firefox
+    - fossil
     - fswebcam
     - fzy
+    - fzf
     - geeqie
     - ghostscript
     - gimp
@@ -31,8 +33,9 @@
     - grap
     - graphviz
     - groff
-    - heirloom-doctools
+    - hugo
     - inkscape
+    - ipython
     - ispell--russian
     - isync
     - jpegoptim
@@ -44,7 +47,6 @@
     - libreoffice
     - libreoffice-i18n-ru
     - lifelines
-    - lowdown
     - maim
     - mc
     - moka-icon-theme
@@ -68,6 +70,7 @@
     - pjsua
     - pngcrush
     - py-casttube
+    - rclone
     - remmina
     - restic
     - rofi
@@ -76,6 +79,7 @@
     - sxiv
     - sysclean
     - swish-e
+    - sqlite3
     - tango-icon-theme
     - tango-icon-theme-extras
     - tarsnap-gui
@@ -148,6 +152,7 @@
     - tkdiff
     - the_silver_searcher
     - z3
+    - uncrustify
 
 - name: install various games
   when: ansible_distribution == "OpenBSD"
