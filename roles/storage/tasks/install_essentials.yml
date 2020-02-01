@@ -11,11 +11,16 @@
     - cgit
     - curl
     - dkimproxy
+    - dovecot
     - git
+    - gitea
     - goaccess
-    - monit
+    - mailpile
     - noice
     - restic
     - rss2email
+    - rspamd
     - ttyd
     - sysclean
+    - wireguard-go
+    - wireguard-tools

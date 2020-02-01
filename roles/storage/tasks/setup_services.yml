@@ -5,22 +5,59 @@
   become: yes
   become_method: doas
   service:
-    name: "{{item}}"
+    name: "{{item.name}}"
+    args: "{{item.args}}"
     state: started
-    enabled: True
+    enabled: yes
   with_items:
-    - cron
-    - dkimproxy_in
-    - dkimproxy_out
-    - httpd
-    - isakmpd
-    - monit
-    - npppd
-    - nsd
-    - ntpd
-    - pflogd
-    - slaacd
-    - slowcgi
-    - smtpd
-    - sshd
-    - syslogd
+    - { name: cron, args: "" }
+    - { name: dkimproxy_in, args: "" }
+    - { name: dkimproxy_out, args: "" }
+    - { name: httpd, args: "" }
+    - { name: isakmpd, args: "" }
+    - { name: monit, args: "" }
+    - { name: npppd, args: "" }
+    - { name: nsd, args: "" }
+    - { name: ntpd, args: "-s" }
+    - { name: pflogd, args: "" }
+    - { name: slowcgi, args: "" }
+    - { name: smtpd, args: "" }
+    - { name: sshd, args: "" }
+    - { name: syslogd, args: "${syslogd_flags} -a /var/unbound/dev/log" }
+
+- name: disable services on boot
+  when: ansible_os_family == "OpenBSD"
+  become: yes
+  become_method: doas
+  service:
+    name: "{{item}}"
+    state: stopped
+    enabled: no
+  with_items:
+    - sndiod
+
+- name: setup ntpd
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: ntpd.conf
+    dest: /etc/ntpd.conf
+    owner: root
+    group: wheel
+    mode: -rw-r--r--
+
+- name: setup monit
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: monitrc
+    dest: /etc/monitrc
+    owner: root
+    group: wheel
+    mode: -rw-------
+
+# TODO:
+# https://medium.com/@cmacrae/your-own-vpn-with-openiked-openbsd-13d7abd3d1d4
+# https://gist.github.com/cmacrae/eaeb6bc8910b13b6388e79335361f151

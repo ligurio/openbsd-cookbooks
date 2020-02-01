@@ -8,4 +8,5 @@
     name: "{{item}}"
     state: present
   with_items:
+    - intel-firmware
     - vmm-firmware

@@ -1,0 +1,31 @@
+---
+
+- name: configure cgit config
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: "{{item.src}}"
+    dest: "{{item.dst}}"
+    owner: root
+    group: wheel
+    mode: -rw-r--r--
+  with_items:
+  with_items:
+    - { src: "cgit/filter/fmt-about", dst: "/var/www/conf/fmt-about" }
+    - { src: "cgit/filter/man2html", dst: "/var/www/conf/man2html" }
+    - { src: "cgit/filter/md2html", dst: "/var/www/conf/md2html" }
+    - { src: "cgit/filter/txt2html", dst: "/var/www/conf/txt2html" }
+    - { src: "cgit/include/cgit.footer", dst: "/var/www/conf/cgit.footer" }
+    - { src: "cgit/include/cgit.head", dst: "/var/www/conf/cgit.head" }
+    # cgit theme from https://git.duncano.de/git.duncano.de/
+    - { src: "cgit/static/style.css", dst: "/var/www/conf/style.css" }
+    - { src: "cgit/static/mandoc.css ", dst: "/var/www/conf/mandoc.css" }
+
+- name: install lowdown
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  openbsd_pkg:
+    name: lowdown
+    state: present
