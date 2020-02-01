@@ -5,8 +5,14 @@
   debug:
     var: become_method
 
+- name: bootstrap
+  import_tasks: bootstrap.yml
+
 - name: install essentials
   import_tasks: install_essentials.yml
+
+- name: install firmwares
+  import_tasks: install_firmwares.yml
 
 - name: configure user's crontab
   import_tasks: user_cron.yml

@@ -5,17 +5,119 @@
   become: yes
   become_method: doas
   service:
-    name: "{{item}}"
+    name: "{{item.name}}"
+    args: "{{item.args}}"
     state: started
-    enabled: True
+    enabled: yes
   with_items:
-    - cron
-    - dhcpd
-    - nsd
-    - ntpd
-    - pflogd
-    - slaacd
-    - smtpd
-    - sshd
-    - syslogd
-    - unbound
+    - { name: cron, args: "" }
+    - { name: dhcpd, args: "" }
+    - { name: nsd, args: "" }
+    - { name: ntpd, args: "-s" }
+    - { name: pflogd, args: "" }
+    - { name: slaacd, args: "" }
+    - { name: smtpd, args: "" }
+    - { name: sshd, args: "" }
+    - { name: syslogd, args: "${syslogd_flags} -a /var/unbound/dev/log" }
+    - { name: unbound, args: "" }
+    - { name: nfcapd, args: "-b 127.0.0.1 -p 1234 -D -E -e -P /var/run/nfcapd.pid -l /var/netflow/" }
+
+- name: disable services on boot
+  when: ansible_os_family == "OpenBSD"
+  become: yes
+  become_method: doas
+  service:
+    name: "{{item}}"
+    state: stopped
+    enabled: no
+  with_items:
+    - library_aslr
+    - sndiod
+
+- name: setup dhcpd
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: dhcpd.conf
+    dest: /etc/dhcpd.conf
+    owner: root
+    group: wheel
+    mode: -rw-r--r--
+
+- name: setup ntpd
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: ntpd.conf
+    dest: /etc/ntpd.conf
+    owner: root
+    group: wheel
+    mode: -rw-r--r--
+
+- name: setup unbound
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: unbound.conf
+    dest: /var/unbound/etc/unbound.conf
+    owner: _unbound
+    group: _unbound
+    mode: -rw-r--r--
+
+- name: setup nsd
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: nsd.conf
+    dest: /var/nsd/etc/nsd.conf
+    owner: _nsd
+    group: _nsd
+    mode: -rw-r-----
+
+- name: setup monit
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: monitrc
+    dest: /etc/monitrc
+    owner: root
+    group: wheel
+    mode: -rw-------
+
+- name: setup flowd
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: flowd.conf
+    dest: /etc/flowd.conf
+    owner: root
+    group: wheel
+    mode: -rw-r--r--
+
+- name: setup tor
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: torrc
+    dest: /etc/tor/torrc
+    owner: _tor
+    group: _tor
+    mode: -rw-r--r--
+
+- name: setup polipo
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  copy:
+    src: config
+    dest: /etc/polipo/config
+    owner: root
+    group: wheel
+    mode: -rw-r--r--
