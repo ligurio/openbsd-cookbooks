@@ -5,105 +5,8 @@
   become_method: doas
   when: ansible_os_family == "OpenBSD"
   openbsd_pkg:
-    name: "{{item}}"
     state: present
-  with_items:
-    - ImageMagick
-    - ansible
-    - asciinema
-    - bzip2
-    - chromium
-    - cmus
-    - curl
-    - djview4
-    - exfat-fuse
-    - exiftran
-    - fdupes
-    - feh
-    - firefox
-    - fossil
-    - fswebcam
-    - fzy
-    - fzf
-    - geeqie
-    - ghostscript
-    - gimp
-    - gnome-themes-standard
-    - gnuplot--no_x11
-    - grap
-    - graphviz
-    - groff
-    - hugo
-    - inkscape
-    - ipython
-    - ispell--russian
-    - isync
-    - jpegoptim
-    - jhead
-    - jq
-    - jo
-    - liberation-fonts
-    - libqrencode
-    - libreoffice
-    - libreoffice-i18n-ru
-    - lifelines
-    - maim
-    - mc
-    - moka-icon-theme
-    - mpv
-    - msmtp
-    - mutt
-    - noice
-    - ntfs_3g
-    - nvi--iconv
-    - nnn
-    - optipng
-    - p5-Image-ExifTool
-    - p7zip
-    - p7zip-rar
-    - passwdqc
-    - pdfpc
-    - pdfsandwich
-    - pdftk
-    - pianobar
-    - pidgin--gtkspell
-    - pjsua
-    - pngcrush
-    - py-casttube
-    - rclone
-    - remmina
-    - restic
-    - rofi
-    - rtl-sdr
-    - scrot
-    - sxiv
-    - sysclean
-    - swish-e
-    - sqlite3
-    - tango-icon-theme
-    - tango-icon-theme-extras
-    - tarsnap-gui
-    - tesseract
-    - tesseract-rus
-    - texlive_base
-    - texlive_texmf-buildset
-    - texlive_texmf-minimal
-    - thunar
-    - tor
-    - unpaper
-    - unzip
-    - urlview
-    - vim
-    - xbattbar
-    - xbindkeys
-    - xcalib
-    - xclip
-    - xsel
-    - xz
-    - zathura
-    - zathura-djvu
-    - zathura-pdf-poppler
-    - zathura-ps
+    name: "{{ packages }}"
 
 - name: create directories
   become: no
@@ -120,48 +23,21 @@
   become_method: doas
   when: ansible_os_family == "OpenBSD"
   openbsd_pkg:
-    name: "{{item}}"
+    name: "{{ python_packages }}"
     state: latest
-  with_items:
-    - py-virtualenv
-    - py-pip
 
 - name: install various development packages
   become: yes
   become_method: doas
   when: ansible_os_family == "OpenBSD"
   openbsd_pkg:
-    name: "{{item}}"
+    name: "{{ dev_packages }}"
     state: latest
-  with_items:
-    - autoconf
-    - automake
-    - afl
-    - cbmc
-    - cmake
-    - coq
-    - entr
-    - frama-c
-    - gcc
-    - git
-    - gmake
-    - go
-    - jupyter-notebook
-    - spin
-    - mscgen
-    - tkdiff
-    - the_silver_searcher
-    - z3
-    - uncrustify
 
 - name: install various games
   when: ansible_distribution == "OpenBSD"
   become: true
   become_method: doas
   openbsd_pkg:
-    name: "{{item}}"
+    name: "{{ game_packages }}"
     state: present
-  with_items:
-    - chessx
-    - openttd
-    - xmahjongg

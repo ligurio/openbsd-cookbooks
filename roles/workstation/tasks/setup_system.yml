@@ -28,6 +28,16 @@
     - "attach"
     - "detach"
 
+- name: create directory /etc/apm
+  become: yes
+  become_method: doas
+  when: ansible_os_family == "OpenBSD"
+  file:
+    path: "/etc/apm"
+    state: directory
+    group: wheel
+    mode: 0655
+
 - name: setup /etc/apm/suspend
   become: yes
   become_method: doas

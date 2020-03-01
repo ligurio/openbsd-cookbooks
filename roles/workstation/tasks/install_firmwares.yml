@@ -1,14 +1,9 @@
 ---
+
 - name: install firmware
   become: yes
   become_method: doas
   when: ansible_os_family == "OpenBSD"
   openbsd_pkg:
-    name: "{{item}}"
+    name: "{{ firmwares }}"
     state: present
-  with_items:
-    - intel-firmware
-    - iwm-firmware
-    - urtwn-firmware
-    - uvideo-firmware
-    - vmm-firmware
