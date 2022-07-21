@@ -17,6 +17,7 @@ packages:
   - fdupes
   - feh
   - firefox
+  - flameshot
   - fossil--static
   - fswebcam
   - fzy
@@ -55,10 +56,13 @@ packages:
   - nvi--iconv
   - nnn
   - optipng
+  # https://github.com/jasperla/openbsd-wip/tree/master/multimedia/obs-studio
+  #- obs-studio
   - p5-Image-ExifTool
   - p7zip
   - p7zip-rar
   - passwdqc
+  - peek
   - pdfpc
   - pdfsandwich
   - pdftk
