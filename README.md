@@ -26,7 +26,7 @@ $ ansible-playbook --ask-become-pass -i hosts -l pony machine.yml
 
 ```
 /*
- * Copyright (c) 2014-2018 Sergey Bronnikov <sergeyb@bronevichok.ru>
+ * Copyright (c) 2014-2022 Sergey Bronnikov <estetus@gmail.com>
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
